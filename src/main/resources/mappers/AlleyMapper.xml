@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bowling.mapper.AlleyMapper">
+
+	<!-- 볼링장 등록 -->
+	<insert id="alleyRegister">
+		<selectKey keyProperty="alleySeq" order="BEFORE" resultType="int">
+			SELECT ALLEY_SEQ_TABLE.NEXTVAL FROM DUAL		
+		</selectKey>
+		INSERT INTO ALLEY
+		(ALLEY_SEQ, ALLEY_ADDR1, ALLEY_ADDR2, ALLEY_ADDR3, ALLEY_TEL, ALLEY_NAME, OPEN_TIME, CLOSE_TIME, PRICE_NOMARL, PRICE_CLUB, PRICE_STUDENT, ALLEY_CONTENT)
+		VALUES(#{alleySeq}, #{alleyAddr1}, #{alleyAddr2}, #{alleyAddr3}, #{alleyTel}, #{alleyName}, #{openTime}, #{closeTime}, #{priceNomarl}, #{priceClub}, #{priceStudent}, #{alleyContent})	
+	</insert>
+	
+	<!-- 볼링장 리스트 -->
+	<select id="alleyList" resultMap="AlleyVO">
+		<![CDATA[
+          SELECT * FROM (
+              SELECT /*+INDEX_DESC(ALLEY ALLEY_PK) */ 
+                  ROWNUM AS RN, ALLEY_NAME, ALLEY_ADDR2, ALLEY_TEL, OPEN_TIME, CLOSE_TIME, PRICE_NOMARL, PRICE_CLUB, PRICE_STUDENT, ALLEY_SEQ
+            FROM ALLEY 
+            WHERE
+             
+    	]]>         
+            <if test="keyword != null">
+                ALLEY_NAME LIKE '%'||#{keyword}||'%' AND
+            </if>
+            
+    	<![CDATA[        
+             ROWNUM <= #{pageNum}*#{amount}
+            )
+        WHERE RN > (#{pageNum} - 1) * #{amount}
+      	]]>
+	</select>
+	
+	<select id="alleyTotal" resultType="int">
+		SELECT COUNT(*) FROM ALLEY
+		
+		<if test="keyword !=null">
+			WHERE ALLEY_NAME LIKE '%'||#{keyword}||'%'		
+		</if>
+	</select>
+	
+	
+	
+	<!-- 볼리장 상세 페이지 -->
+	<select id="alleyDetail" parameterType="int" resultMap="AlleyVO">
+		SELECT ALLEY_SEQ, ALLEY_ADDR2, ALLEY_TEL, ALLEY_NAME, OPEN_TIME, CLOSE_TIME, PRICE_NOMARL, PRICE_CLUB, PRICE_STUDENT, ALLEY_CONTENT
+		FROM ALLEY
+		WHERE ALLEY_SEQ = #{alleySeq}		
+	</select>
+	
+	
+	<!-- 볼링장 정보 수정 -->
+	<update id="alleyModify">
+		UPDATE ALLEY
+		SET ALLEY_ADDR1 = #{alleyAddr1}, ALLEY_TEL = #{alleyTel}, ALLEY_NAME = #{alleyName}, OPEN_TIME = #{openTime},
+			CLOSE_TIME = #{closeTime}, PRICE_NOMARL = #{priceNomarl}, PRICE_CLUB = #{priceClub}, PRICE_STUDENT = #{priceStudent},
+			ALLEY_ADDR2 = #{alleyAddr2}, ALLEY_ADDR3 = #{alleyAddr3}, ALLEY_CONTENT = #{alleyContent}
+		WHERE ALLEY_SEQ = #{alleySeq}	
+	</update>
+	
+	<!-- 볼링장 정보 삭제 -->
+	<delete id="alleyDelete">
+		DELETE FROM ALLEY WHERE ALLEY_SEQ = #{alleySeq}
+	</delete>
+	
+	
+	
+	
+	
+	
+	<resultMap id="AlleyVO" type="com.bowling.domain.vo.AlleyVO">
+	
+      <result property="alleySeq" column="ALLEY_SEQ" />
+      <result property="alleyAddr1" column="ALLEY_ADDR1" />
+      <result property="alleyAddr2" column="ALLEY_ADDR2" />
+      <result property="alleyAddr3" column="ALLEY_ADDR3" />
+      <result property="alleyTel" column="ALLEY_TEL" />
+      <result property="alleyName" column="ALLEY_NAME" />
+      <result property="openTime" column="OPEN_TIME" />
+      <result property="closeTime" column="CLOSE_TIME" />
+      <result property="priceNomarl" column="PRICE_NOMARL" />
+      <result property="priceClub" column="PRICE_CLUB" />
+      <result property="priceStudent" column="PRICE_STUDENT" />
+      <result property="alleyContent" column="ALLEY_CONTENT" />
+   </resultMap>
+
+
+
+</mapper>
