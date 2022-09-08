@@ -27,11 +27,13 @@
 	<link rel="stylesheet" href="${path}/resources/css/tiny-slider.css">
 	<link rel="stylesheet" href="${path}/resources/css/aos.css">
 	<link rel="stylesheet" href="${path}/resources/css/style.css">
+	<link rel="stylesheet" href="${path}/resources/css/jquery.datetimepicker.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 
-	<title>볼미사</title>
+	<title>볼링어때</title>
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+	<script src="${path}/resources/js/jquery.datetimepicker.full.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>

@@ -1,5 +1,7 @@
 package com.bowling.domain.vo;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -16,4 +18,8 @@ public class AlleyVO {
 	private int priceClub;
 	private int priceStudent;
 	private String alleyContent;
+	
+	//이미지 정보
+	private List<AttachImageVO> imageList;
+	
 }

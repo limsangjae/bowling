@@ -42,50 +42,55 @@
 	<div class="section">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+				<div data-aos="fade-up" data-aos-delay="200">
 					<form action="/alley/register.do" method="post" id="registerForm">
-						<div class="row">
-							<div class="col-10 mb-3">
-								<input name="alleyName" class="form-control" placeholder="볼링장 이름">
+						<div class="row justify-content-between">
+							<div class="col-lg-7">
+								<div class="col-10 mb-3">
+									<input name="alleyName" class="form-control" placeholder="볼링장 이름">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="alleyAddr1" class="form-control address_input_1" placeholder="우편번호" readonly="readonly">
+									<button onclick="execution_daum_address()" type="button" class="btn btn-primary addrBtn">주소 찾기</button>
+								</div>
+								<div class="col-10 mb-3">
+									<input name="alleyAddr2" class="form-control address_input_2" placeholder="주소" readonly="readonly">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="alleyAddr3" class="form-control address_input_3" placeholder="상세주소" readonly="readonly">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="alleyTel" class="form-control" placeholder="전화번호">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="openTime" class="form-control" placeholder="오픈시간">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="closeTime" class="form-control" placeholder="마감시간">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="priceNomarl" class="form-control" placeholder="일반가격">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="priceClub" class="form-control" placeholder="클럽가격">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="priceStudent" class="form-control" placeholder="학생가격">
+								</div>
+								<div class="col-10 mb-3">
+									<textarea name="alleyContent" id="alleyContent_textarea" class="form-control" placeholder="볼링장 소개"></textarea>
+								</div> 
+								<div class="col-10 mb-3">
+									<input type="file" multiple id ="fileItem" name="uploadFile" class="form-control">
+								</div>
 							</div>
-							<div class="col-8 mb-3">
-								<input name="alleyAddr1" class="form-control address_input_1" placeholder="우편번호" readonly="readonly">
-							</div>
-							<div class="col-4 mb-3">
-								<button onclick="execution_daum_address()" type="button" class="btn btn-primary">주소 찾기</button>
-							</div>
-							<div class="col-10 mb-3">
-								<input name="alleyAddr2" class="form-control address_input_2" placeholder="주소" readonly="readonly">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="alleyAddr3" class="form-control address_input_3" placeholder="상세주소" readonly="readonly">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="alleyTel" class="form-control" placeholder="전화번호">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="openTime" class="form-control" placeholder="오픈시간">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="closeTime" class="form-control" placeholder="마감시간">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="priceNomarl" class="form-control" placeholder="일반가격">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="priceClub" class="form-control" placeholder="클럽가격">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="priceStudent" class="form-control" placeholder="학생가격">
-							</div>
-							<div class="col-10 mb-3">
-								<textarea name="alleyContent" id="alleyContent_textarea" class="form-control" placeholder="볼링장 소개"></textarea>
-							</div> 
-							<div class="col-10 mb-3">
-								<input type="file" multiple id ="fileItem" name="uploadFile" class="form-control">
-							</div>
+						<div class="col-lg-5 mb-5 mb-lg-0 order-lg-2">
+							<div class="img-about" id="uploadResult">
 
+							</div>
 						</div>
+						</div>
+						
 					</form>
 					<div class="col-10">
 						<button id ="cancelBtn" class = "btn btn-primary">취소</button>
@@ -111,12 +116,15 @@
     <%@ include file = "../include/js.jsp" %>
     
     <script>
-    	var registerForm = $("registerForm")
+    	var registerForm = $("#registerForm")
     	
-    	/* 상품 등록 버튼 */
+    	/* 볼링장 등록 버튼 */
     	$("#registerBtn").on("click",function(e){
+    		
+    		e.preventDefault();
+    		
     		registerForm.submit();
-    	})
+    	});
     	
     	/* 취소 버튼 */
 		$("#cancelBtn").click(function(){
@@ -188,14 +196,19 @@
     	/* 이미지 업로드 */
     	$("input[type='file']").on("change", function(e){
     		
+    		/* 이미지 존재시 삭제 */
+    		if($(".imgDeleteBtn").length > 0){
+    			deleteFile();
+    		}
+    		
     		let formData = new FormData();
     		let fileInput = $('input[name="uploadFile"]');
     		let fileList = fileInput[0].files;
     		let fileObj = fileList[0];
     		
-    		if(!fileCheck(fileObj.name, fileObj.size)){
-    			return false;
-    		}
+//     		if(!fileCheck(fileObj.name, fileObj.size)){
+//     			return false;
+//     		}
     		for(let i = 0; i < fileList.length; i++){
     			formData.append("uploadFile", fileList[i]);
     		}
@@ -205,7 +218,14 @@
     	    	contentType : false,
     	    	data : formData,
     	    	type : 'POST',
-    	    	dataType : 'json'
+    	    	dataType : 'json',
+   		    	success : function(result){
+   		    		console.log(result);
+   		    		showUploadImage(result);
+   		    	},
+   		    	error : function(result){
+   		    		alert("이미지 파일이 아닙니다.")
+   		    	}
     		});
     	
     	});
@@ -229,6 +249,64 @@
     		return true;		
     		
     	}
+    	
+    	/* 이미지 출력 */
+    	function showUploadImage(uploadResultArr){
+
+    		/* 전달받은 데이터 검증 */
+    		if(!uploadResultArr || uploadResultArr.length == 0){return}
+    		
+	    	let uploadResult = $("#uploadResult");
+	    	
+	    	let obj = uploadResultArr[0];
+	    	
+	    	let str = "";
+	    	
+	    	let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+	    	
+	    	str += "<div id='result_card'>";
+			str += "<img src='display?fileName=" + fileCallPath +"' class='img-fluid mb-2'>";
+			str += "<div class='imgDeleteBtn' data-file='"+ fileCallPath +"'><i class='bi bi-x-circle'></i></div>";
+			str += "</div>";
+			str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
+			str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
+			str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";
+			
+			uploadResult.append(str);
+    	}
+    	
+    	/* 이미지 삭제 버튼 동작 */
+    	$("#uploadResult").on("click", ".imgDeleteBtn", function(e){
+    		deleteFile();
+    	});
+    	/* 파일 삭제 메서드 */
+    	function deleteFile(){
+    		
+    		let targetFile = $(".imgDeleteBtn").data("file");
+    		
+    		let targetDiv = $("#result_card");
+    		
+    		$.ajax({
+    			url: '/alley/deleteFile',
+    			data : {fileName : targetFile},
+    			dataType : 'text',
+    			type : 'POST',
+    			success : function(result){
+    				console.log(result);
+    				
+    				targetDiv.remove();
+    				$("input[type='file']").val("");
+    			},
+    			error : function(result){
+    				console.log(result);
+    				
+    				alert("파일을 삭제하지 못하였습니다.")
+    			}
+           });
+    		
+    	}
+    	
+    	
     </script>
     
   </body>

@@ -65,7 +65,17 @@
 		DELETE FROM ALLEY WHERE ALLEY_SEQ = #{alleySeq}
 	</delete>
 	
+	<!-- 이미지 등록 -->
+	<insert id="imageRegister">
+		
+		INSERT INTO IMAGE(ALLEY_SEQ,FILE_NAME,UPLOAD_PATH,UUID) VALUES (#{alleySeq},#{fileName},#{uploadPath},#{uuid})
 	
+	</insert>
+	
+	<!-- 지정 볼링장 이미지 전체 삭제 -->
+	<delete id="deleteImageAll">
+		DELETE FROM IMAGE WHERE ALLEY_SEQ = #{alleySeq}
+	</delete>
 	
 	
 	

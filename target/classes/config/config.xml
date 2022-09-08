@@ -3,5 +3,6 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.bowling.domain.vo.MemberVO" alias="MemberVO"/>
+		<typeAlias type="com.bowling.domain.vo.AttachImageVO" alias="AttachImageVO"/>
 	</typeAliases>
 </configuration>

@@ -13,6 +13,7 @@
     <script src="../resources/js/navbar.js"></script>
     <script src="../resources/js/counter.js"></script>
     <script src="../resources/js/custom.js"></script>
+    <script src="../resources/js/jquery.datetimepicker.full.js"></script>
     
 </body>
 </html>

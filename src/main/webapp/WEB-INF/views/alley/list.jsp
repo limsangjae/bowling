@@ -51,12 +51,10 @@
 					<c:forEach items="${list}" var="list">
 						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 							<div class="property-item mb-30">
-								<a href='<c:out value="${list.alleySeq}"/>' class="img move"> <img
-									src="${path}/resources/images/hero_bg_1.jpg" alt="Image"
-									class="img-fluid">
-								</a>
-	
-								<div class="property-content">
+								<div class="image_wrap img" data-alleyseq="${list.imageList[0].alleySeq}" data-path="${list.imageList[0].uploadPath}" data-uuid="${list.imageList[0].uuid}" data-filename="${list.imageList[0].fileName}"> 
+									<img alt="Image" class="img-fluid">
+								</div>
+								<div class="property-content content_wrap">
 									<div class="price mb-2">
 										<span><c:out value="${list.alleyName}" /></span>
 									</div>
@@ -75,7 +73,7 @@
 											</span>
 										</div>
 	
-										<a href='<c:out value="${list.alleySeq}"/>' class="btn btn-primary py-2 px-3 move">자세히 보기</a>
+										<a href='<c:out value="${list.alleySeq}"/>' class="btn btn-primary py-2 px-3 move">예약하기</a>
 									</div>
 								</div>
 							</div>
@@ -161,7 +159,7 @@
 					return;
 				}
 				
-				alert("상품'"+ eResult +"'을 등록하였습니다.");
+				alert("볼링장'"+ eResult +"'을 등록하였습니다.");
 				
 			}
 			
@@ -178,6 +176,27 @@
 			if(delete_result == 1){
 				alert("삭제 완료");
 			}	
+		
+		
+			/* 이미지 삽입 */
+			$(".image_wrap").each(function(i, obj){
+				
+				const aobj = $(obj);
+				
+				if(aobj.data("alleyseq")){
+					const uploadPath = aobj.data("path");
+					const uuid = aobj.data("uuid");
+					const fileName = aobj.data("filename");
+					
+					const fileCallPath = encodeURIComponent(uploadPath + "/s_" + uuid + "_" + fileName);
+					
+					$(this).find("img").attr('src', 'display?fileName=' + fileCallPath);
+				} else{
+					$(this).find("img").attr('src', '${path}/resources/images/Noimg.png');
+				}
+				
+			});
+		
 		});
 	
 	
@@ -210,7 +229,7 @@
 			searchForm.submit();
 			
 		});
-		/* 상품 조회 페이지 */
+		/* 볼링장 조회 페이지 */
 		$(".move").on("click", function(e){
 			
 			e.preventDefault();

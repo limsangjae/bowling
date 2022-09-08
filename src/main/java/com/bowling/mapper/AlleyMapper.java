@@ -3,6 +3,7 @@ package com.bowling.mapper;
 import java.util.List;
 
 import com.bowling.domain.vo.AlleyVO;
+import com.bowling.domain.vo.AttachImageVO;
 import com.bowling.domain.vo.Criteria;
 
 public interface AlleyMapper {
@@ -25,4 +26,10 @@ public interface AlleyMapper {
 	
 	//볼링장 삭제
 	public int alleyDelete(int alleySeq);
+	
+	//이미지 등록
+	public void imageRegister(AttachImageVO vo);
+	
+	//지정 볼링장 이미지 전체 삭제
+	public void deleteImageAll(int alleySeq);
 }

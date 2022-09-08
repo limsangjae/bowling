@@ -43,45 +43,53 @@
 	<div class="section">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-10" data-aos="fade-up" data-aos-delay="200">
+				<div data-aos="fade-up" data-aos-delay="200">
 					<form action="/alley/modify" method="post" id="modifyForm">
-						<div class="row">
-							<div class="col-10 mb-3">
-								<input name="alleyName" class="form-control" placeholder="볼링장 이름" value="<c:out value='${alleyInfo.alleyName}'></c:out>">
-							</div>
-							<div class="col-8 mb-3">
-								<input name="alleyAddr1" class="form-control address_input_1" placeholder="우편번호" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr1}'></c:out>">
-							</div>
-							<div class="col-2 mb-3">
-								<button onclick="execution_daum_address()" type="button" class="btn btn-primary">주소 찾기</button>
-							</div>
-							<div class="col-10 mb-3">
-								<input name="alleyAddr2" class="form-control address_input_2" placeholder="주소" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr2}'></c:out>">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="alleyAddr3" class="form-control address_input_3" placeholder="상세주소" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr3}'></c:out>">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="alleyTel" class="form-control" placeholder="전화번호" value="<c:out value='${alleyInfo.alleyTel}'></c:out>">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="openTime" class="form-control" placeholder="오픈시간" value="<c:out value='${alleyInfo.openTime}'></c:out>">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="closeTime" class="form-control" placeholder="마감시간" value="<c:out value='${alleyInfo.closeTime}'></c:out>">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="priceNomarl" class="form-control" placeholder="일반가격" value="<c:out value='${alleyInfo.priceNomarl}'></c:out>">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="priceClub" class="form-control" placeholder="클럽가격" value="<c:out value='${alleyInfo.priceClub}'></c:out>">
-							</div>
-							<div class="col-10 mb-3">
-								<input name="priceStudent" class="form-control" placeholder="학생가격" value="<c:out value='${alleyInfo.priceStudent}'></c:out>">
-							</div>
-							<div class="col-10 mb-3">
-								<textarea name="alleyContent" id="alleyContent_textarea" class="form-control" placeholder="볼링장 소개">${alleyInfo.alleyContent}</textarea>
+						<div class="row justify-content-between">
+							<div class="col-lg-7">
+								<div class="col-10 mb-3">
+									<input name="alleyName" class="form-control" placeholder="볼링장 이름" value="<c:out value='${alleyInfo.alleyName}'></c:out>">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="alleyAddr1" class="form-control address_input_1" placeholder="우편번호" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr1}'></c:out>">
+									<button onclick="execution_daum_address()" type="button" class="btn btn-primary addrBtn">주소 찾기</button>
+								</div>
+								<div class="col-10 mb-3">
+									<input name="alleyAddr2" class="form-control address_input_2" placeholder="주소" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr2}'></c:out>">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="alleyAddr3" class="form-control address_input_3" placeholder="상세주소" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr3}'></c:out>">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="alleyTel" class="form-control" placeholder="전화번호" value="<c:out value='${alleyInfo.alleyTel}'></c:out>">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="openTime" class="form-control" placeholder="오픈시간" value="<c:out value='${alleyInfo.openTime}'></c:out>">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="closeTime" class="form-control" placeholder="마감시간" value="<c:out value='${alleyInfo.closeTime}'></c:out>">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="priceNomarl" class="form-control" placeholder="일반가격" value="<c:out value='${alleyInfo.priceNomarl}'></c:out>">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="priceClub" class="form-control" placeholder="클럽가격" value="<c:out value='${alleyInfo.priceClub}'></c:out>">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="priceStudent" class="form-control" placeholder="학생가격" value="<c:out value='${alleyInfo.priceStudent}'></c:out>">
+								</div>
+								<div class="col-10 mb-3">
+									<textarea name="alleyContent" id="alleyContent_textarea" class="form-control" placeholder="볼링장 소개">${alleyInfo.alleyContent}</textarea>
+								</div>
+								<div class="col-10 mb-3">
+									<input type="file" multiple id ="fileItem" name="uploadFile" class="form-control">
+								</div>
 							</div> 
+						<div class="col-lg-5 mb-5 mb-lg-0 order-lg-2">
+							<div class="img-about" id="uploadResult">
+
+							</div>
+						</div>
 						</div>
 						<input type="hidden" name="alleySeq" value="${alleyInfo.alleySeq}">
 					</form>
@@ -206,6 +214,143 @@
     		moveForm.submit();
     	});
     	
+    	/* 이미지 삭제 버튼 동작 */
+    	$("#uploadResult").on("click", ".imgDeleteBtn", function(e){
+    		
+    		deleteFile();
+    		
+    	});
+    	
+    	/* 파일 삭제 메서드 */
+    	function deleteFile(){
+    		
+    		$("#result_card").remove();
+    	}
+    	
+    	/* 이미지 업로드 */
+    	$("input[type='file']").on("change", function(e){
+    		
+    		/* 이미지 존재시 삭제 */
+    		if($("#result_card").length > 0){
+    			deleteFile();
+    		}
+    				
+    		let formData = new FormData();
+    		let fileInput = $('input[name="uploadFile"]');
+    		let fileList = fileInput[0].files;
+    		let fileObj = fileList[0];
+    		
+    		if(!fileCheck(fileObj.name, fileObj.size)){
+    			return false;
+    		}
+    		
+    		formData.append("uploadFile", fileObj);
+    		
+    		$.ajax({
+    			url: '/alley/uploadAjaxAction',
+    	    	processData : false,
+    	    	contentType : false,
+    	    	data : formData,
+    	    	type : 'POST',
+    	    	dataType : 'json',
+    	    	success : function(result){
+    	    		console.log(result);
+    	    		showUploadImage(result);
+    	    	},
+    	    	error : function(result){
+    	    		alert("이미지 파일이 아닙니다.");
+    	    	}
+    		});		
+
+    		
+    	});
+    		
+    	/* var, method related with attachFile */
+    	let regex = new RegExp("(.*?)\.(jpg|png)$");
+    	let maxSize = 1048576; //1MB	
+    	
+    	function fileCheck(fileName, fileSize){
+
+    		if(fileSize >= maxSize){
+    			alert("파일 사이즈 초과");
+    			return false;
+    		}
+    			  
+    		if(!regex.test(fileName)){
+    			alert("해당 종류의 파일은 업로드할 수 없습니다.");
+    			return false;
+    		}
+    		
+    		return true;		
+    		
+    	}
+    	
+    	/* 이미지 출력 */
+    	function showUploadImage(uploadResultArr){
+    		
+    		/* 전달받은 데이터 검증 */
+    		if(!uploadResultArr || uploadResultArr.length == 0){return}
+    		
+    		let uploadResult = $("#uploadResult");
+    		
+    		let obj = uploadResultArr[0];
+    		
+    		let str = "";
+    		
+    		let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+    		
+    		str += "<div id='result_card'>";
+    		str += "<img src='display?fileName=" + fileCallPath +"' class='img-fluid mb-2'>";
+    		str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'><i class='bi bi-x-circle'></i></div>";
+    		str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
+    		str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
+    		str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";		
+    		str += "</div>";		
+    		
+       		uploadResult.append(str);     
+            
+    	}
+    	
+    	$(document).ready(function(){
+			/* 기존 이미지 출력 */
+			let alleySeq = '<c:out value="${alleyInfo.alleySeq}"/>';
+			let uploadResult = $("#uploadResult");
+			
+			$.getJSON("getAttachList", {alleySeq : alleySeq}, function(arr){
+				
+				console.log(arr);
+				
+				if(arr.length === 0){
+					
+					
+					let str = "";
+					str += "<div id='result_card'>";
+					str += "<img src='${path}/resources/images/Noimg.png' class='img-fluid'>";
+					str += "</div>";
+					
+					uploadResult.html(str);				
+					return;
+				}
+				
+				let str = "";
+				let obj = arr[0];
+				
+				let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+				str += "<div id='result_card'";
+				str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "'";
+				str += ">";
+				str += "<img src='display?fileName=" + fileCallPath +"'class='img-fluid mb-2'>";
+				str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'><i class='bi bi-x-circle'></i></div>";
+				str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
+				str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
+				str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";				
+				str += "</div>";
+				
+				uploadResult.html(str);			
+				
+			});// GetJSON
+    		
+    	});
     	
     </script>
     
