@@ -2,8 +2,12 @@ package com.bowling.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.bowling.domain.vo.AlleyMemberGradeVO;
 import com.bowling.domain.vo.AlleyVO;
 import com.bowling.domain.vo.AttachImageVO;
+import com.bowling.domain.vo.BookingVO;
 import com.bowling.domain.vo.Criteria;
 
 public interface AlleyMapper {
@@ -32,4 +36,10 @@ public interface AlleyMapper {
 	
 	//지정 볼링장 이미지 전체 삭제
 	public void deleteImageAll(int alleySeq);
+	
+	//볼링장별 회원등급조회
+	public String alleyMemberGrade(AlleyMemberGradeVO alleyMemberGradeVO);
+	
+	//회원등급 조건 체크
+	public int MemberGradeCk(BookingVO bookingVO);
 }

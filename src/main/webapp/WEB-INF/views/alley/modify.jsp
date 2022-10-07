@@ -23,12 +23,12 @@
 
 	<%@ include file = "../include/nav.jsp" %>
 
-	<div class="hero page-inner overlay" style="background-image: url('${path}/resources/images/bowling_logo.png');">
+	<div class="hero page-inner overlay" style="background-image: url('${path}/resources/images/hero_bg_3.jpg');">
 
 		<div class="container">
 			<div class="row justify-content-center align-items-center">
 				<div class="col-lg-9 text-center mt-5">
-					<h1 class="heading" data-aos="fade-up">볼링장 등록</h1>
+					<h1 class="heading" data-aos="fade-up">볼링장 수정</h1>
 					<nav aria-label="breadcrumb" data-aos="fade-up" data-aos-delay="200">
 						<ol class="breadcrumb text-center justify-content-center">
 							<li class="breadcrumb-item "><a href="index.jsp">Home</a></li>
@@ -51,14 +51,14 @@
 									<input name="alleyName" class="form-control" placeholder="볼링장 이름" value="<c:out value='${alleyInfo.alleyName}'></c:out>">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="alleyAddr1" class="form-control address_input_1" placeholder="우편번호" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr1}'></c:out>">
+									<input name="alleyZipCode" class="form-control address_input_1" placeholder="우편번호" readonly="readonly" value="<c:out value='${alleyInfo.alleyZipCode}'></c:out>">
 									<button onclick="execution_daum_address()" type="button" class="btn btn-primary addrBtn">주소 찾기</button>
 								</div>
 								<div class="col-10 mb-3">
-									<input name="alleyAddr2" class="form-control address_input_2" placeholder="주소" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr2}'></c:out>">
+									<input name="alleyAddr1" class="form-control address_input_2" placeholder="주소" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr1}'></c:out>">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="alleyAddr3" class="form-control address_input_3" placeholder="상세주소" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr3}'></c:out>">
+									<input name="alleyAddr2" class="form-control address_input_3" placeholder="상세주소" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr2}'></c:out>">
 								</div>
 								<div class="col-10 mb-3">
 									<input name="alleyTel" class="form-control" placeholder="전화번호" value="<c:out value='${alleyInfo.alleyTel}'></c:out>">
@@ -77,6 +77,9 @@
 								</div>
 								<div class="col-10 mb-3">
 									<input name="priceStudent" class="form-control" placeholder="학생가격" value="<c:out value='${alleyInfo.priceStudent}'></c:out>">
+								</div>
+								<div class="col-10 mb-3">
+									<input name="alleyRain" class="form-control" placeholder="레인개수" value="<c:out value='${alleyInfo.alleyRain}'></c:out>">
 								</div>
 								<div class="col-10 mb-3">
 									<textarea name="alleyContent" id="alleyContent_textarea" class="form-control" placeholder="볼링장 소개">${alleyInfo.alleyContent}</textarea>
@@ -124,12 +127,7 @@
     <%@ include file = "../include/js.jsp" %>
     
     <script>
-    	var registerForm = $("registerForm")
-    	
-    	/* 상품 등록 버튼 */
-    	$("#registerBtn").on("click",function(e){
-    		registerForm.submit();
-    	})
+    
     	 /* 다음 주소 연동 */
     	 function execution_daum_address(){
     	 	 

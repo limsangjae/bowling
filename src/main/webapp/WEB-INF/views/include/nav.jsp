@@ -20,33 +20,36 @@ referrerpolicy="no-referrer">
 
 					<ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end">
 						<li class="has-children">
-							<a href="properties.html">볼링장</a>
+							<a href="/alley/list">볼링장</a>
 							<ul class="dropdown">
-								<li><a href="/alley/register">볼링장 등록</a></li>
+								<c:if test="${memberVO.adminCk == 1 }">
+									<li><a href="/alley/register">볼링장 등록</a></li>
+								</c:if>
 								<li><a href="/alley/list">볼링장 목록</a></li>
-								<li class="has-children">
-									<a href="#">Dropdown</a>
-									<ul class="dropdown">
-										<li><a href="#">Sub Menu One</a></li>
-										<li><a href="#">Sub Menu Two</a></li>
-										<li><a href="#">Sub Menu Three</a></li>
-									</ul>
-								</li>
 							</ul>
 						</li>
-						<li><a href="services.html">게시판</a></li>
-						<li><a href="about.html">About</a></li>
+						
+						<!-- 관리자로 로그인했을때 -->
+						<c:if test="${memberVO.adminCk == 1}">
+							<li><a href="/admin/main">관리자페이지</a></li>
+						</c:if>
+						
 						<!-- 로그인 하지 않은 상태 -->
 						<c:if test="${memberVO == null}">
 							<li><a href="/member/login">로그인</a></li>
 						</c:if>
 						
 						<!-- 로그인한 상태 -->
-						<c:if test="${ memberVO != null }">
-							<c:if test="${memberVO.adminCk == 1 }">
-								<li><a href="/admin/main">관리자 페이지</a></li>
-							</c:if>
-							<li><a>${memberVO.memberName}</a></li>
+						<c:if test="${ memberVO != null}">
+							<c:if test="${memberVO.adminCk != 1}">							
+								<li class="has-children">
+									<a href="/member/detail">회원정보</a>
+									<ul class="dropdown">
+										<li><a href="/member/detail">예약내역</a></li>
+										<li><a href="/member/modify">회원정보수정</a></li>
+									</ul>
+								</li>						
+							</c:if>	
 							<li><a href="/member/logout.do">로그아웃</a></li>
 						</c:if>
 					</ul>

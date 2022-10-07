@@ -10,11 +10,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -25,22 +25,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.bowling.domain.vo.AlleyMemberGradeVO;
 import com.bowling.domain.vo.AlleyVO;
 import com.bowling.domain.vo.AttachImageVO;
 import com.bowling.domain.vo.BookingVO;
 import com.bowling.domain.vo.Criteria;
+import com.bowling.domain.vo.MemberVO;
 import com.bowling.domain.vo.PageDTO;
 import com.bowling.service.AlleyService;
 import com.bowling.service.AttachService;
-import com.bowling.service.BookingService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -54,11 +52,8 @@ public class AlleyController {
 	
 	@Autowired
 	private AttachService attachService;
+	
 
-	@Autowired
-	private BookingService bookingService;
-	
-	
 	
 	//볼링장 등록
 	@GetMapping("/register")
@@ -103,13 +98,32 @@ public class AlleyController {
 	
 	//볼링장 상세보기, 수정
 	@GetMapping({"/detail","/modify"})
-	public void alleyDetailGET(int alleySeq, Criteria cri, Model model) throws Exception{
+	public void alleyDetailGET(int alleySeq, Criteria cri, Model model,AlleyMemberGradeVO alleyMemberGradeVO,BookingVO bookingVO,HttpServletRequest request) throws Exception{
 		
 			//볼링장 리스트 페이지 정보
 			model.addAttribute("cri", cri);
-			
+		
 			//선택한 볼링장 정보
-			model.addAttribute("alleyInfo", alleyService.alleyDetail(alleySeq));			
+			model.addAttribute("alleyInfo", alleyService.alleyDetail(alleySeq));
+			
+			HttpSession session = request.getSession();
+			
+			MemberVO sessionMember = (MemberVO)session.getAttribute("memberVO");
+			String sessionId = sessionMember.getMemberId();
+			
+			
+			alleyMemberGradeVO.setAlleySeq(alleySeq);
+			alleyMemberGradeVO.setMemberId(sessionId);
+			bookingVO.setAlleySeq(alleySeq);
+			bookingVO.setMemberId(sessionId);
+			
+			String memberGrade = alleyService.alleyMemberGrade(alleyMemberGradeVO);
+			
+			model.addAttribute("memberGrade", memberGrade);
+		
+			int memberGradeCk = alleyService.MemberGradeCk(bookingVO);
+
+			model.addAttribute("memberGradeCk", memberGradeCk);
 	}
 	
 	//볼링장 수정
@@ -223,24 +237,6 @@ public class AlleyController {
 				
 				ImageIO.write(bt_image, "jpg", thumbnailFile);//("파일로 저장할 이미지","어떠한 이미지 형식으로 저장할지","썸네일 이미지가 저장될 경로와 이름")		
 				
-				
-				/* thumbnail 라이브러리 */
-				/*
-				File thumbnailFile = new File(uploadPath, "s_" + uploadFileName);	
-				
-				BufferedImage bo_image = ImageIO.read(saveFile);
-
-					//비율 
-					double ratio = 3;
-					//넓이 높이
-					int width = (int) (bo_image.getWidth() / ratio);
-					int height = (int) (bo_image.getHeight() / ratio);					
-				
-				
-				Thumbnails.of(saveFile)
-		        .size(width, height)
-		        .toFile(thumbnailFile);
-		        */
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 
@@ -311,39 +307,6 @@ public class AlleyController {
 		return new ResponseEntity<List<AttachImageVO>>(attachService.getAttachList(alleySeq),HttpStatus.OK);
 	}
 	
-	
-	@PostMapping("/reserve")
-	@ResponseBody
-	public String reservePOST(@ModelAttribute BookingVO vo) {
-		
-		String boTime = vo.getBoTime();
-		
-		bookingService.bookingDetail(vo);
-		
-		return boTime;
-	}
-	
-	//성웅씨 코드
-//	@PostMapping('/post')
-//	@ResponseBody
-//	public Stirng posttest(@RequestParam Map<String, Object> commandMap) {
-//	public String posttest(@ModelAttribute BookingVO bookingvo){
-//		
-//			booking.getAlleyseq()
-//			commandMap.get("data");
-//			commandMap.get("name").toString();
-//			Integer.parseInt(commandMap.get("age").toString());
-//		
-//	}
-	
-	//민성씨 코드
-//	@GetMapping(value="/dupleCheck", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//	@ResponseBody
-//	public String ss(HttpServletRequest request, RedirectAttributes rttr) {
-//		
-//		String test = (String) request.getParameter("param");
-//		
-//		return test;
-//	}
+
 	
 }

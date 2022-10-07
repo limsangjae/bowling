@@ -3,76 +3,72 @@
 <mapper namespace="com.bowling.mapper.BookingMapper">
 
 
-<select id="bookingDetail" resultMap="BookingVO">
-SELECT 
-COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '09' THEN '1' END) AS BOOKING9
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '10' THEN '1' END) AS BOOKING10
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '11' THEN '1' END) AS BOOKING11
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '12' THEN '1' END) AS BOOKING12
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '13' THEN '1' END) AS BOOKING13
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '14' THEN '1' END) AS BOOKING14
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '15' THEN '1' END) AS BOOKING15
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '16' THEN '1' END) AS BOOKING16
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '17' THEN '1' END) AS BOOKING17
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '18' THEN '1' END) AS BOOKING18
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '19' THEN '1' END) AS BOOKING19
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '20' THEN '1' END) AS BOOKING20
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '21' THEN '1' END) AS BOOKING21
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '22' THEN '1' END) AS BOOKING22
-,COUNT(CASE WHEN TO_CHAR(BO_TIME, 'HH24') = '23' THEN '1' END) AS BOOKING23
-FROM ALLEY A
-LEFT JOIN BOOKING B ON A.ALLEY_SEQ = B.ALLEY_SEQ 
-WHERE A.ALLEY_SEQ = #{alleySeq}
-;
-</select>
+	<insert id="bookingRegister">
+		INSERT INTO booking
+		(ALLEY_SEQ, MEMBER_ID, BO_TIME, BO_DATE, BO_GAME, PUBLIC_CNT, CLUB_CNT, STUDENT_CNT, FIRST_REGIST_TM, FIRST_REGIST_ID, LAST_UPDT_TM)
+		VALUES (#{alleySeq}, #{memberId}, #{boTime}, #{boDate}, #{boGame}, #{publicCnt}, #{clubCnt}, #{studentCnt}, NOW(), #{memberId}, NOW())
+	</insert>
+	
+	<insert id="alley_grade_register">
+		INSERT INTO alley_member_grade (ALLEY_SEQ, MEMBER_ID, ALLEY_MEMBER_GRADE, ALLEY_NAME)
+		VALUES (#{alleySeq}, #{memberId}, '일반', #{alleyName})
+	</insert>
+	
+	<select id="alley_grade_select" resultType="String">
+		SELECT ALLEY_MEMBER_GRADE FROM alley_member_grade WHERE member_id = #{memberId} AND alley_seq = #{alleySeq}
+	</select>
 
 
 
 
+	<select id="bookingDetail" resultType="java.util.Map">
+		SELECT *
+		FROM 
+		( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t09 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '09:00' AND BO_DATE = #{boDate} ) t09
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t10 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '10:00' AND BO_DATE = #{boDate} ) t10
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t11 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '11:00' AND BO_DATE = #{boDate} ) t11
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t12 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '12:00' AND BO_DATE = #{boDate} ) t12
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t13 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '13:00' AND BO_DATE = #{boDate} ) t13
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t14 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '14:00' AND BO_DATE = #{boDate} ) t14
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t15 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '15:00' AND BO_DATE = #{boDate} ) t15
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t16 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '16:00' AND BO_DATE = #{boDate} ) t16
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t17 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '17:00' AND BO_DATE = #{boDate} ) t17
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t18 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '18:00' AND BO_DATE = #{boDate} ) t18
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t19 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '19:00' AND BO_DATE = #{boDate} ) t19
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t20 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '20:00' AND BO_DATE = #{boDate} ) t20
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t21 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '21:00' AND BO_DATE = #{boDate} ) t21
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t22 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '22:00' AND BO_DATE = #{boDate} ) t22
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t23 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '23:00' AND BO_DATE = #{boDate} ) t23
+		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t24 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '24:00' AND BO_DATE = #{boDate} ) t24
+	</select>
+	
+	<select id="bookingDetailOne" resultType="Integer">
+		SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t09 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = #{boTime} AND BO_DATE = #{boDate}
+	</select>
 
 
+	<delete id="bookingDelete">
+		DELETE FROM BOOKING WHERE BO_NUM = #{boNum}
+	</delete>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	<select id="selectBooking" resultMap="BookingVO">
+		SELECT BO_NUM,ALLEY_SEQ,BO_TIME,BO_DATE,MEMBER_ID
+		FROM BOOKING
+		WHERE ALLEY_SEQ = #{alleySeq} AND BO_DATE = #{boDate}  
+		<if test='!memberId.equals("admin")'>
+			AND MEMBER_ID = #{memberId}
+		</if>
+	</select>
 
 
 
 
 <resultMap id="BookingVO" type="com.bowling.domain.vo.BookingVO">
-	
       <result property="alleySeq" column="ALLEY_SEQ" />
       <result property="boNum" column="BO_NUM" />
       <result property="boTime" column="BO_TIME" />
       <result property="boDate" column="BO_DATE" />
-      <result property="booking9" column="BOOKING9" />
-      <result property="booking10" column="BOOKING10" />
-      <result property="booking11" column="BOOKING11" />
-      <result property="booking12" column="BOOKING12" />
-      <result property="booking13" column="BOOKING13" />
-      <result property="booking14" column="BOOKING14" />
-      <result property="booking15" column="BOOKING15" />
-      <result property="booking16" column="BOOKING16" />
-      <result property="booking17" column="BOOKING17" />
-      <result property="booking18" column="BOOKING18" />
-      <result property="booking19" column="BOOKING19" />
-      <result property="booking20" column="BOOKING20" />
-      <result property="booking21" column="BOOKING21" />
-      <result property="booking22" column="BOOKING22" />
-      <result property="booking23" column="BOOKING23" />
-      <result property="booking24" column="BOOKING24" />
+      <result property="memberId" column="MEMBER_ID" />
    </resultMap>
 
 

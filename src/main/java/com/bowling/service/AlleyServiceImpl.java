@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bowling.domain.vo.AlleyMemberGradeVO;
 import com.bowling.domain.vo.AlleyVO;
 import com.bowling.domain.vo.AttachImageVO;
+import com.bowling.domain.vo.BookingVO;
 import com.bowling.domain.vo.Criteria;
 import com.bowling.mapper.AlleyMapper;
 import com.bowling.mapper.AttachMapper;
@@ -28,11 +30,14 @@ public class AlleyServiceImpl implements AlleyService {
 			return;
 		}
 		
-		for(AttachImageVO attach : alleyVO.getImageList()) {
+		System.out.println(alleyVO.getImageList());
+		
+		alleyVO.getImageList().forEach(attach ->{
 			
 			attach.setAlleySeq(alleyVO.getAlleySeq());
 			alleyMapper.imageRegister(attach);
-		}
+			
+		});
 	}
 
 	@Override
@@ -85,6 +90,16 @@ public class AlleyServiceImpl implements AlleyService {
 	@Override
 	public int alleyDelete(int alleySeq) {
 		return alleyMapper.alleyDelete(alleySeq);
+	}
+
+	@Override
+	public String alleyMemberGrade(AlleyMemberGradeVO alleyMemberGradeVO) {
+		return alleyMapper.alleyMemberGrade(alleyMemberGradeVO);
+	}
+
+	@Override
+	public int MemberGradeCk(BookingVO bookingVO) {
+		return alleyMapper.MemberGradeCk(bookingVO);
 	}
 
 }

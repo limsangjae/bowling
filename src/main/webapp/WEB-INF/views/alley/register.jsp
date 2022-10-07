@@ -22,7 +22,7 @@
 
 	<%@ include file = "../include/nav.jsp" %>
 
-	<div class="hero page-inner overlay" style="background-image: url('${path}/resources/images/bowling_logo.png');">
+	<div class="hero page-inner overlay" style="background-image: url('${path}/resources/images/hero_bg_3.jpg');">
 
 		<div class="container">
 			<div class="row justify-content-center align-items-center">
@@ -50,14 +50,14 @@
 									<input name="alleyName" class="form-control" placeholder="볼링장 이름">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="alleyAddr1" class="form-control address_input_1" placeholder="우편번호" readonly="readonly">
+									<input name="alleyZipCode" class="form-control address_input_1" placeholder="우편번호" readonly="readonly">
 									<button onclick="execution_daum_address()" type="button" class="btn btn-primary addrBtn">주소 찾기</button>
 								</div>
 								<div class="col-10 mb-3">
-									<input name="alleyAddr2" class="form-control address_input_2" placeholder="주소" readonly="readonly">
+									<input name="alleyAddr1" class="form-control address_input_2" placeholder="주소" readonly="readonly">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="alleyAddr3" class="form-control address_input_3" placeholder="상세주소" readonly="readonly">
+									<input name="alleyAddr2" class="form-control address_input_3" placeholder="상세주소" readonly="readonly">
 								</div>
 								<div class="col-10 mb-3">
 									<input name="alleyTel" class="form-control" placeholder="전화번호">
@@ -78,11 +78,16 @@
 									<input name="priceStudent" class="form-control" placeholder="학생가격">
 								</div>
 								<div class="col-10 mb-3">
+									<input name="alleyRain" class="form-control" placeholder="레인개수">
+								</div>
+								<div class="col-10 mb-3">
 									<textarea name="alleyContent" id="alleyContent_textarea" class="form-control" placeholder="볼링장 소개"></textarea>
 								</div> 
 								<div class="col-10 mb-3">
-									<input type="file" multiple id ="fileItem" name="uploadFile" class="form-control">
+									<input type="file" multiple="multiple" id ="fileItem" name="uploadFile" class="form-control">
 								</div>
+								<input type="hidden" name="firstRegistId" value="${memberVO.memberId}">
+								<input type="hidden" name="lastUpdtId" value="${memberVO.memberId}">
 							</div>
 						<div class="col-lg-5 mb-5 mb-lg-0 order-lg-2">
 							<div class="img-about" id="uploadResult">
@@ -196,19 +201,16 @@
     	/* 이미지 업로드 */
     	$("input[type='file']").on("change", function(e){
     		
-    		/* 이미지 존재시 삭제 */
-    		if($(".imgDeleteBtn").length > 0){
-    			deleteFile();
-    		}
+
     		
     		let formData = new FormData();
     		let fileInput = $('input[name="uploadFile"]');
     		let fileList = fileInput[0].files;
     		let fileObj = fileList[0];
     		
-//     		if(!fileCheck(fileObj.name, fileObj.size)){
-//     			return false;
-//     		}
+    		if(!fileCheck(fileObj.name, fileObj.size)){
+    			return false;
+    		}
     		for(let i = 0; i < fileList.length; i++){
     			formData.append("uploadFile", fileList[i]);
     		}

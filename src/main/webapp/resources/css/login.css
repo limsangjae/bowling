@@ -12,6 +12,10 @@
     --insta-color: #E1306C;
 }
 
+a{
+	text-decoration: none;
+	color: black;
+}
 
 
 * {
@@ -70,7 +74,6 @@ body {
 .input-group {
     position: relative;
     width: 100%;
-    margin: 1rem 0;
 }
 
 .input-group i {
@@ -258,10 +261,15 @@ body {
 	display : none;
 }
 
+.id_input_re_3{
+	color : red;
+	display : none;
+}
+
 .box{display:flex; flex-direction:row; width:100%;}
 input.address_input_1{flex-basis:80%;}
 .add_btn{flex-basis:17%; margin-left:3%; font-size:15px!important; background-color:linen!important;color: black!important}
-
+input.id_input{flex-basis:80%;}
 
 
  
@@ -301,7 +309,10 @@ input.address_input_1{flex-basis:80%;}
         color : red;
         display : none;    
 }
-
+.pwck_input_re_4{
+        color : red;
+        display : none;    
+}
  
 /* 로그인 실패시 경고글 */
 .login_warn{
@@ -411,3 +422,25 @@ input.address_input_1{flex-basis:80%;}
         font-size: 2rem;
     }
 }
+.name{
+	float: left;
+    margin-left: 6px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+.join_button{
+	margin-top: 1rem;
+}
+.modify_button{
+	margin-top: 1rem;
+}
+.id_input_login{
+	margin-top: 1rem;
+}
+.pw_input_login{
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+/* .sign-up > .input-group{ */
+/* 	margin-bottom: 1rem; */
+/* } */

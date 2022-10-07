@@ -11,6 +11,9 @@ public class Criteria {
     /* 페이지 표시 개수 */
     private int amount;
     
+    /* 페이지 skip */
+    private int skip;
+    
     /* 검색 타입 */
     private String type;
     
@@ -21,11 +24,12 @@ public class Criteria {
     public Criteria(int pageNum, int amount) {
         this.pageNum = pageNum;
         this.amount = amount;
+        this.skip = (pageNum -1)*amount;
     }
     
     /* Criteria 기본 생성자 */
     public Criteria(){
-        this(1,9);
+        this(1,10);
     }
     
     /* 검색 타입 데이터 배열 변환 */

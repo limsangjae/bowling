@@ -23,17 +23,25 @@
 	<%@ include file="../include/nav.jsp"%>
 
 	<div class="hero page-inner overlay"
-		style="background-image: url('${path}/resources/images/bowling_logo.png');">
+		style="background-image: url('${path}/resources/images/hero_bg_3.jpg');">
 
 		<div class="container">
 			<div class="row justify-content-center align-items-center">
 				<div class="col-lg-9 text-center mt-5">
 					<h1 class="heading" data-aos="fade-up">볼링장 목록</h1>
-
+					
+					<div class="col-lg-9 text-center search_wrap">
+						<form id="searchForm" action="/alley/list" method="get" class="narrow-w form-search d-flex align-items-stretch mb-3"data-aos="fade-up" data-aos-delay="200">
+								<input type="text" class="form-control px-4" name="keyword" placeholder="볼링장 이름" value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+								<input type="hidden" name="pageNum"value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
+								<input type="hidden" name="amount" value='<c:out value="${pageMaker.cri.amount }"></c:out>'>
+								<button class='btn btn-primary'>검색</button>
+						</form>
+					</div>
+					
 					<nav aria-label="breadcrumb" data-aos="fade-up"
 						data-aos-delay="200">
 						<ol class="breadcrumb text-center justify-content-center">
-							<li class="breadcrumb-item "><a href="index.jsp">Home</a></li>
 						</ol>
 					</nav>
 				</div>
@@ -52,15 +60,17 @@
 						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 							<div class="property-item mb-30">
 								<div class="image_wrap img" data-alleyseq="${list.imageList[0].alleySeq}" data-path="${list.imageList[0].uploadPath}" data-uuid="${list.imageList[0].uuid}" data-filename="${list.imageList[0].fileName}"> 
-									<img alt="Image" class="img-fluid">
+									<a href='<c:out value="${list.alleySeq}"/>' class="move">
+										<img alt="Image" class="img-fluid">
+									</a>
 								</div>
 								<div class="property-content content_wrap">
 									<div class="price mb-2">
 										<span><c:out value="${list.alleyName}" /></span>
 									</div>
 									<div>
-										<span class="d-block mb-2 text-black-50"><c:out
-												value="${list.alleyAddr2}" /></span> <span class="city d-block mb-3"></span>
+										<span class="d-block mb-2 text-black-50"><c:out value="${list.alleyAddr1},${list.alleyAddr2}" /></span>
+										<span class="city d-block mb-3"></span>
 	
 										<div class="specs d-flex mb-4">
 											<span class="d-block d-flex align-items-center me-3">
@@ -69,7 +79,7 @@
 											</span>
 											 <span class="d-block d-flex align-items-center">
 											  <i class="bi bi-clock-fill me-2"></i> 
-											  <span class="caption"><c:out value="${list.openTime}시${list.closeTime}시" /></span>
+											  <span class="caption"><c:out value="${list.openTime}시~${list.closeTime}시" /></span>
 											</span>
 										</div>
 	
@@ -88,17 +98,11 @@
              	</c:if>  
 			</div>
 		</div>
-		<!-- 검색 영역 -->
-		<div class="search_wrap">
-			<form id="searchForm" action="/alley/list" method="get">
-				<div class="search_input">
-					<input type="text" name="keyword"value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
-					<input type="hidden" name="pageNum"value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
-					<input type="hidden" name="amount" value='${pageMaker.cri.amount}'>
-					<button class='search_btn'>검 색</button>
-				</div>
-			</form>
-		</div>
+		<c:if test="${memberVO.adminCk == 1 }">
+			<div class="btn_wrap">
+				<a href="/alley/register" class="btn btn-primary py-2 px-3">등록하기</a>
+			</div>
+		</c:if>
 		<!-- 페이지 이동 인터페이스 영역 -->
 		<div class="pageMaker_wrap">
 

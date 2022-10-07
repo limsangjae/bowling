@@ -18,16 +18,16 @@
 </head>
 <body>
 
-	<div id="container" class="container">
+	<div id="container" class="container sign-up">
     <!-- FORM SECTION -->
     <div class="row">
       <!-- SIGN UP -->
-      <form class="col align-items-center flex-col sign-up" id="join_form" method="post">
+      <form class="col align-items-center flex-col sign-up" id="modifyform" method="post" action="/member/modify">
         <div class="form-wrapper align-items-center">
           <div class="form sign-up">
-           	<b class="name">*아이디</b>
+          	<b class="name">*아이디</b>
             <div class="box input-group">
-            	<input class="id_input" id="memberId" name="memberId" maxlength='16'>
+            	<input class="id_input" id="memberId" name="memberId" placeholder="아이디" maxlength='16' readonly="readonly" value='<c:out value="${memberInfo.memberId}"></c:out>'>
 				<button class="add_btn" type="button" onclick="idDuple()">중복확인</button>
 				<input type="hidden" id="memberIdCk" value="0">
             </div>
@@ -39,54 +39,57 @@
 			</div>
 			<b class="name">*비밀번호</b>
             <div class="input-group">
-              <input class="pw_input" id="memberPw"name="memberPw" type="password" >
+              <input class="pw_input" id="memberPw"name="memberPw" type="password" placeholder="비밀번호">
               <span class="pwck_input_re_4">8 ~ 16자 영문, 숫자, 특수문자를 최소 한가지씩 조합</span>
             </div>
             <b class="name">*비밀번호 확인</b>
             <div class="input-group">
-              <input class="pwck_input" id="memberPwCk" type="password" >
+              <input class="pwck_input" id="memberPwCk" type="password" placeholder="비밀번호 확인">
               <span class="final_pwck_ck">비밀번호 확인을 입력해주세요.</span>
               <span class="pwck_input_re_1">비밀번호가 일치합니다.</span>
               <span class="pwck_input_re_2">비밀번호가 일치하지 않습니다.</span>              
             </div>
             <b class="name">*이메일</b>
             <div class="input-group">
-              <input class="mail_input" id="memberEmail" name="memberEmail" type="email"  maxlength="100" placeholder="abc@abc.com">
+              <input class="mail_input" id="memberEmail" name="memberEmail" type="email" placeholder="이메일" maxlength="100" value='<c:out value="${memberInfo.memberEmail}"></c:out>'>
             </div>
             <b class="name">*이름</b>
             <div class="input-group">
-              <input class="name_input" id="memberName" name="memberName" maxlength="5" oninput="nameCk()" placeholder="한글만 입력 가능">
+              <input class="name_input" id="memberName" name="memberName" placeholder="이름" maxlength="5" oninput="nameCk()" value='<c:out value="${memberInfo.memberName}"></c:out>'>
             </div>
             <b class="name">*생년월일</b>
             <div class="input-group">
-              <input class="datepicker age_input" id="memberBirth" name="dateBirth"  value="" autocomplete='off' placeholder="숫자만 입력 가능">
+              <input class="datepicker age_input" id="memberBirth" name="dateBirth" placeholder="생년월일" value='<c:out value="${memberInfo.dateBirth}"></c:out>'>
             </div>
             <b class="name">*전화번호</b>
             <div class="input-group">
-              <input class="tel_input" id="memberTel"name="memberTel"  maxlength="11" oninput="telinput()" placeholder="숫자만 입력 가능">
+              <input class="tel_input" id="memberTel"name="memberTel" placeholder="전화번호" maxlength="14" oninput="telinput()" value='<c:out value="${memberInfo.memberTel}"></c:out>'>
             </div>
             <b class="name">*우편번호</b>
             <div class="box input-group">
-			    <input class="address_input_1" id="memberZipCode" name="memberZipCode"  readonly="readonly">
+			    <input class="address_input_1" id="memberZipCode" name="memberZipCode" placeholder="우편번호" readonly="readonly" value='<c:out value="${memberInfo.memberZipCode}"></c:out>'>
 			    <button class="add_btn" type="button" onclick="execution_daum_address()">주소찾기</button>
 			</div>
 			<b class="name">*주소</b>
 			<div class="input-group">
-              <input class="address_input_2" id="memberAddr1" name="memberAddr1"  readonly="readonly">
+              <input class="address_input_2" id="memberAddr1" name="memberAddr1" placeholder="주소" readonly="readonly" value='<c:out value="${memberInfo.memberAddr1}"></c:out>'>
             </div>
             <b class="name">상세주소</b>
             <div class="input-group">
-              <input class="address_input_3" id="memberAddr2" name="memberAddr2" readonly="readonly" maxlength="100" placeholder="선택입력">
+              <input class="address_input_3" id="memberAddr2" name="memberAddr2" placeholder="상세주소" readonly="readonly" maxlength="100" value='<c:out value="${memberInfo.memberAddr2}"></c:out>'>
             </div>
-            <button class="join_button" type="button">
-              회원가입
+            <button class="modify_button" type="button">
+              수정하기
             </button>
             <p>
+            	<b><a href="/">홈페이지로 이동</a></b>
+            </p>
+            <p>
               <span>
-                이미 가입된 회원입니까?
+                회원을 탈퇴하시겠습니까?
               </span>
-              <b onclick="toggle()" class="pointer">
-                로그인으로 이동
+              <b class="pointer" id="delete">
+                회원탈퇴
               </b>
             </p>
           </div>
@@ -95,60 +98,10 @@
       </form>
       
       <!-- END SIGN UP -->
-      <!-- SIGN IN -->
-      <form class="col align-items-center flex-col sign-in" id="login_form" method="post">
-        <div class="form-wrapper align-items-center">
-          <div class="form sign-in">
-            <div class="input-group">
-              <input type="text" id="login_id" class="id_input_login" name="memberId" placeholder="아이디">
-            </div>
-            <div class="input-group">
-              <input type="password" id="login_pw" class="pw_input_login" name="memberPw" placeholder="비밀번호" onkeyup="enterkey()">
-            </div>
-            <c:if test = "${result == 0}">
-	           <div class="login_warn">사용자 ID 또는 비밀번호를 잘못 입력하셨습니다.</div>
-            </c:if>
-            
-            <button type="button" class="login_button">
-              로그인
-            </button>
-            <p>
-              <b>
-				<a href="/">홈페이지로 이동</a>              
-              </b>
-            </p>
-            <p>
-              <span>
-                회원이 아니십니까?
-              </span>
-              <b onclick="toggle()" class="pointer">
-                회원가입으로 이동
-              </b>
-            </p>
-          </div>
-        </div>
-        <div class="form-wrapper">
-    
-        </div>
-      </form>
-      <!-- END SIGN IN -->
     </div>
     <!-- END FORM SECTION -->
     <!-- CONTENT SECTION -->
     <div class="row content-row">
-      <!-- SIGN IN CONTENT -->
-      <div class="col align-items-center flex-col">
-        <div class="text sign-in">
-          <h2>
-            로그인 페이지 입니다.
-          </h2>
-  
-        </div>
-        <div class="img sign-in">
-    
-        </div>
-      </div>
-      <!-- END SIGN IN CONTENT -->
       <!-- SIGN UP CONTENT -->
       <div class="col align-items-center flex-col">
         <div class="img sign-up">
@@ -156,7 +109,20 @@
         </div>
         <div class="text sign-up">
           <h2>
-            회원가입 페이지 입니다.
+            
+          </h2>
+  
+        </div>
+      </div>
+      
+      
+      <div class="col align-items-center flex-col">
+        <div class="img sign-up">
+        
+        </div>
+        <div class="text sign-up">
+          <h2>
+            회원정보수정
           </h2>
   
         </div>
@@ -169,47 +135,19 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   
 <script>
-  let container = document.getElementById('container')
-
-  toggle = () => {
-    container.classList.toggle('sign-in')
-    container.classList.toggle('sign-up')
-  }
-
-  setTimeout(() => {
-    container.classList.add('sign-in')
-  }, 200)
-  
-var idckCheck = false;
-
-  function enterkey() {
-		if (window.event.keyCode == 13) {
-			$("#login_form").attr("action", "/member/login.do");
-		    $("#login_form").submit();
-	    }
-	}  
-  
-  
-/* 로그인 버튼 클릭 메서드 */
-$(".login_button").click(function(){
-    
-	var loginId = $("#login_id").val();
-	var loginPw = $("#login_pw").val();
+$("#delete").on("click",function(){
+	let modifyform = $("#modifyform");
+	modifyform.attr("action", "/member/delete");
+	modifyform.submit();
 	
-	if(loginId == ""){
-		alert("아이디를 입력해주세요.")
-	}else if(loginPw == ""){
-		alert("비밀번호를 입력해주세요.")	
-	}else{
-		/* 로그인 메서드 서버 요청 */
-	    $("#login_form").attr("action", "/member/login.do");
-	    $("#login_form").submit();	
+	let answer = confirm("정말 회원을 탈퇴하시겠습니까?");
+	
+	if(answer){
+		alert("회원이 탈퇴되었습니다.");
 	}
-	
-	
-    
-});
-  
+}) 
+
+
  $("#memberId").on("change",function(){
 		 $("#memberIdCk").val("0"); 
 }) 
@@ -234,51 +172,14 @@ $(".login_button").click(function(){
 	 $('.datepicker').datepicker();
 	 
  	//회원가입 버튼(회원가입 기능 작동)
-     $(".join_button").click(function(){
-    	 
-    	 if(!idckCheck){
-    		 alert("중복된 아이디는 가입할수 없습니다.")
-    		 return false;
-    	 }
+     $(".modify_button").click(function(){
          
     	 if($('.id_input').val() == ""){
     		 $('#memberId').focus();
     		 alert("아이디를 입력해 주세요");
     		 return false;
-    	 }else if($("#memberIdCk").val() == '0'){
-    		 alert("중복확인을해주세요");
-    		 return false;
     	 }
-    	 
-    	 if($('.pw_input').val() == ""){
-    		 $('#memberPw').focus();
-    		 alert("비밀번호를 입력해 주세요");
-    		 return false;
-    	 }else{
-    		 var pw = $('.pw_input').val();
-    	     var pwCk = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;    //8 ~ 16자 영문, 숫자, 특수문자를 최소 한가지씩 조합
-    	     
-    	     if(!pwCk.test(pw)){
-    	    	 $('.pwck_input_re_4').css('display','block');
-    	    	 return false;
-    	     }else{
-    	    	 $('.pwck_input_re_4').css('display','none');
-    	     }
-    		 
-    	 }
-    	 
-    	 if($('.pwck_input').val() == ""){
-    		 $('#memberPwCk').focus();
-    		 alert("비밀번호 확인을 입력해 주세요")
-    		 return false;
-    	 }
-    	 
-    	 if($('.pw_input').val() != $('.pwck_input').val()){
-    		 $('#memberPw').focus();
-    		 alert("비밀번호와 비밀번호확인의 값이 다릅니다.")
-    		 return false;
-    	 }
-    	 
+    
     	 
     	 if($('.mail_input').val() == ""){
     		 alert("이메일을 입력해 주세요")
@@ -315,9 +216,7 @@ $(".login_button").click(function(){
     		 return false;
     	 }
          
-        $("#join_form").attr("action","/member/join");
-        $("#join_form").submit();
-        alert("회원가입에 성공했습니다.");
+        $("#modifyform").submit();
 
      });
  });
@@ -373,6 +272,7 @@ function idDuple(){
 	 
 	 if(!nameCk.test(name)){
 		 $("#memberName").val('');
+		 alert("한글만 입력 가능합니다.")
 	 }
 
  }
@@ -387,6 +287,7 @@ function idDuple(){
 	 
 	 if(!telinput.test(tel)){
 		 $("#memberTel").val("");
+		 alert("숫자만 입력 가능합니다.");
 	 }else{
 		 $("#memberTel").blur(function(){
 			let a = tel.slice(0,3);
@@ -491,6 +392,19 @@ function idDuple(){
  $('.pw_input').on("blur",function(){
      var pw = $('.pw_input').val();
      var pwck = $('.pwck_input').val();
+     var pwReg = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;    //8 ~ 16자 영문, 숫자, 특수문자를 최소 한가지씩 조합
+     
+     
+	     
+     if(!pwReg.test(pw)){
+    	 $('.pwck_input_re_4').css('display','block');
+    	 return false;
+     }else{
+    	 $('.pwck_input_re_4').css('display','none');
+     }
+		 
+     
+     
 	 if(pwck !="" && pw != pwck){
 		 alert("비밀번호를 다시 확인해주세요")
 		 $('.pw_input').val("");
