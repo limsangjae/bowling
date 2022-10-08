@@ -47,6 +47,7 @@
 						<div class="row justify-content-between">
 							<div class="col-lg-7">
 								<div class="col-10 mb-3">
+									<b>볼링장 이름</b>
 									<input name="alleyName" class="form-control" placeholder="볼링장 이름">
 								</div>
 								<div class="col-10 mb-3">
