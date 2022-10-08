@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bowling.mapper.AdminMapper">
+	
+	<update id="gradeUpReady">
+		UPDATE alley_member_grade
+		SET GRADE_YN = "R"
+		WHERE MEMBER_ID = #{memberId} AND ALLEY_SEQ = #{alleySeq}
+	</update>
+	
+	<select id="gradeInfoList" resultMap="AlleyMemberGradeVO">
+		SELECT ALLEY_NAME,MEMBER_ID,ALLEY_MEMBER_GRADE,ALLEY_MEMBER_SEQ FROM alley_member_grade
+		WHERE GRADE_YN = "R"
+	</select>
+	
+	<update id="gradeUpOk">
+		UPDATE alley_member_grade
+		SET ALLEY_MEMBER_GRADE = "클럽", GRADE_YN = "Y"
+		WHERE ALLEY_MEMBER_GRADE = "일반" AND GRADE_YN = "R" AND ALLEY_MEMBER_SEQ = #{alleyMemberSeq}
+	</update>
+	
+	<resultMap id="AlleyMemberGradeVO" type="com.bowling.domain.vo.AlleyMemberGradeVO">
+      <result property="alleySeq" column="ALLEY_SEQ" />
+      <result property="memberId" column="MEMBER_ID" />
+      <result property="alleyMemberGrade" column="ALLEY_MEMBER_GRADE" />
+      <result property="alleyName" column="ALLEY_NAME" />
+      <result property="alleyMemberSeq" column="ALLEY_MEMBER_SEQ" />
+    </resultMap>
+	
+	
+	
+</mapper>
