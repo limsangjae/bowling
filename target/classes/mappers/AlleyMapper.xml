@@ -104,14 +104,23 @@
 		WHERE DATE_ADD(NOW(), INTERVAL -3 MONTH) AND MEMBER_ID = #{memberId} AND alley_seq = #{alleySeq}
 	</select>
 	
+	<!-- 예약된 총 횟수 -->
+	<select id="bookingTotalCnt" resultType="int">
+		SELECT SUM(b.PUBLIC_CNT+ b.CLUB_CNT+ b.STUDENT_CNT) AS total
+		FROM booking b
+		LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ
+		WHERE b.BO_TIME = #{boTime} AND b.BO_DATE = #{boDate} AND (a.ALLEY_NAME LIKE '%'||#{alleyName}||'%' OR a.ALLEY_ADDR1 LIKE '%'||#{localName}||'%')
+	</select>
 	
-	
+	<select id="searchAlleyInfo" resultMap="AlleyVO">
+		SELECT a.*
+		FROM booking b
+		LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ
+		WHERE b.BO_TIME = #{boTime} AND b.BO_DATE = #{boDate} AND (a.ALLEY_NAME LIKE '%'||#{alleyName}||'%' OR a.ALLEY_ADDR1 LIKE '%'||#{localName}||'%')
+	</select>
 	
 	<resultMap id="AlleyVO" type="com.bowling.domain.vo.AlleyVO">
       <result property="alleySeq" column="ALLEY_SEQ" />
-      <result property="alleyZipCode" column="ALLEY_ZIP_CODE" />
-      <result property="alleyAddr1" column="ALLEY_ADDR1" />
-      <result property="alleyAddr2" column="ALLEY_ADDR2" />
       <result property="alleyTel" column="ALLEY_TEL" />
       <result property="alleyName" column="ALLEY_NAME" />
       <result property="openTime" column="OPEN_TIME" />
@@ -119,8 +128,15 @@
       <result property="priceNomarl" column="PRICE_NOMARL" />
       <result property="priceClub" column="PRICE_CLUB" />
       <result property="priceStudent" column="PRICE_STUDENT" />
-      <result property="alleyContent" column="ALLEY_CONTENT" />
+      <result property="alleyZipCode" column="ALLEY_ZIP_CODE" />
+      <result property="alleyAddr1" column="ALLEY_ADDR1" />
+      <result property="alleyAddr2" column="ALLEY_ADDR2" />
       <result property="alleyRain" column="ALLEY_RAIN" />
+      <result property="alleyContent" column="ALLEY_CONTENT" />
+      <result property="firstRegistTm" column="FIRST_REGIST_TM" />
+      <result property="firstRegistId" column="FIRST_REGIST_ID" />
+      <result property="lastUpdtTm" column="LAST_UPDT_TM" />
+      <result property="lastUpdtId" column="LAST_UPDT_ID" />
    </resultMap>
    
    <resultMap id="AlleyMemberGradeVO" type="com.bowling.domain.vo.AlleyMemberGradeVO">

@@ -6,6 +6,7 @@ import com.bowling.domain.vo.AlleyMemberGradeVO;
 import com.bowling.domain.vo.AlleyVO;
 import com.bowling.domain.vo.BookingVO;
 import com.bowling.domain.vo.Criteria;
+import com.bowling.domain.vo.SearchVO;
 
 public interface AlleyService {
 	
@@ -32,4 +33,10 @@ public interface AlleyService {
 	
 	//회원등급 조건 체크
 	public int MemberGradeCk(BookingVO bookingVO);
+
+	//사용자가 입력한 값에 해당되는 예약 횟수의 총합
+	public int bookingTotalCnt(SearchVO searchVO);
+	
+	//사용자가 입력한 값으로 찾은 볼링장들의 목록
+	public List<AlleyVO> searchAlleyInfo(SearchVO searchVO);
 }

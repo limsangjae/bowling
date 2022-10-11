@@ -47,10 +47,8 @@
 						<div class="row justify-content-between">
 							<div class="col-lg-7">
 								<div class="col-10 mb-3">
-<<<<<<< HEAD
 									<b>볼링장 이름</b>
-=======
->>>>>>> 6c0d8ff34506620f6a31d5480fbb606f5f88f542
+
 									<input name="alleyName" class="form-control" placeholder="볼링장 이름">
 								</div>
 								<div class="col-10 mb-3">

@@ -10,6 +10,7 @@ import com.bowling.domain.vo.AlleyVO;
 import com.bowling.domain.vo.AttachImageVO;
 import com.bowling.domain.vo.BookingVO;
 import com.bowling.domain.vo.Criteria;
+import com.bowling.domain.vo.SearchVO;
 import com.bowling.mapper.AlleyMapper;
 import com.bowling.mapper.AttachMapper;
 
@@ -100,6 +101,16 @@ public class AlleyServiceImpl implements AlleyService {
 	@Override
 	public int MemberGradeCk(BookingVO bookingVO) {
 		return alleyMapper.MemberGradeCk(bookingVO);
+	}
+
+	@Override
+	public int bookingTotalCnt(SearchVO searchVO) {
+		return alleyMapper.bookingTotalCnt(searchVO);
+	}
+
+	@Override
+	public List<AlleyVO> searchAlleyInfo(SearchVO searchVO) {
+		return alleyMapper.searchAlleyInfo(searchVO);
 	}
 
 }

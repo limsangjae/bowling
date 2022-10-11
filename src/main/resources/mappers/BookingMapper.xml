@@ -22,7 +22,8 @@
 
 
 	<select id="bookingDetail" resultType="java.util.Map">
-		SELECT *
+		SELECT IFNULL(t09,0) AS t09, IFNULL(t10,0) AS t10, IFNULL(t11,0) AS t11, IFNULL(t12,0) AS t12, IFNULL(t13,0) AS t13, IFNULL(t14,0) AS t14, IFNULL(t15,0) AS t15, IFNULL(t16,0) AS t16
+		, IFNULL(t17,0) AS t17, IFNULL(t18,0) AS t18, IFNULL(t19,0) AS t19, IFNULL(t20,0) AS t20, IFNULL(t21,0) AS t21, IFNULL(t22,0) AS t22, IFNULL(t23,0) AS t23, IFNULL(t24,0) AS t24
 		FROM 
 		( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t09 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '09:00' AND BO_DATE = #{boDate} ) t09
 		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t10 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '10:00' AND BO_DATE = #{boDate} ) t10
@@ -43,23 +44,13 @@
 	</select>
 	
 	<select id="bookingDetailOne" resultType="Integer">
-		SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t09 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = #{boTime} AND BO_DATE = #{boDate}
+		SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS total FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = #{boTime} AND BO_DATE = #{boDate}
 	</select>
 
 
 	<delete id="bookingDelete">
 		DELETE FROM BOOKING WHERE BO_NUM = #{boNum}
 	</delete>
-
-	<select id="selectBooking" resultMap="BookingVO">
-		SELECT BO_NUM,ALLEY_SEQ,BO_TIME,BO_DATE,MEMBER_ID
-		FROM BOOKING
-		WHERE ALLEY_SEQ = #{alleySeq} AND BO_DATE = #{boDate}  
-		<if test='!memberId.equals("admin")'>
-			AND MEMBER_ID = #{memberId}
-		</if>
-	</select>
-
 
 
 

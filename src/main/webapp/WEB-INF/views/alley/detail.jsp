@@ -208,7 +208,7 @@
     
 
 	
-	//$('.datepicker').val("날짜선택");
+	$('.datepicker').val("날짜선택");
     
     let url = new URL(window.location.href);
     
@@ -247,6 +247,7 @@
 			const date = $('.datepicker').val();
 			const memberId = "${memberVO.memberId}";
 		
+			console.log(date);
 			
 			formdata ={
 					alleySeq : alleySeq,
@@ -257,9 +258,11 @@
 			$.ajax({
 				url: '/booking/detail',
 				data: formdata ,
-				type : 'GET',
+				type : 'get',
 				dataType:'json',
 				success:function(data){
+					
+					console.log(data);
 					
 					var html = "";
 					
@@ -291,6 +294,13 @@
 					//날짜를 선택했을때 관리자이거나 로그인한memberId와 해당 예약의 memberId가 같으면 i태그가 보이고 아니면 안보이게
 					
 				},
+				error : function(xhr, status, error){
+	            	alert("실패");
+	                console.log(xhr.status);           // 에러코드(404, 500 등)
+	                console.log(xhr.responseText); // html 포맷의 에러 메시지
+	                console.log(status);                // 'error'
+	                console.log(error);                 // 'Not Found'
+	        }
 			});
 		},
 	})

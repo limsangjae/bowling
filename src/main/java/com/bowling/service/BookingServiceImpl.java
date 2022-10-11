@@ -34,11 +34,6 @@ public class BookingServiceImpl implements BookingService {
 		return bookingMapper.bookingDelete(vo);
 	}
 
-	@Override
-	public List<BookingVO> selectBooking(BookingVO vo) {
-		return bookingMapper.selectBooking(vo);
-	}
-
 
 	@Override
 	public String alley_grade_select(BookingVO vo) {

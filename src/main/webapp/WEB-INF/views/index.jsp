@@ -46,6 +46,11 @@
 					<h1 class="heading" data-aos="fade-up">볼링장 검색</h1>
 					<form id="searchForm" action="/alley/list" method="get" class="narrow-w form-search d-flex align-items-stretch mb-3"data-aos="fade-up" data-aos-delay="200">
 							<input type="text" class="form-control px-4" name="keyword" placeholder="볼링장 이름" value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+							<input type="text" class="form-control px-4" name="localName" placeholder="지역명" value='<c:out value=""></c:out>'>
+							<input type="text" class="form-control px-4" name="boDate" placeholder="날짜" value='<c:out value=""></c:out>'>
+							<input type="text" class="form-control px-4" name="boTime" placeholder="시간" value='<c:out value=""></c:out>'>
+							<input type="text" class="form-control px-4" name="totalCnt" placeholder="인원" value='<c:out value=""></c:out>'>
+							<input type="text" class="form-control px-4" name="boGame" placeholder="게임수" value='<c:out value=""></c:out>'>
 							<input type="hidden" name="pageNum"value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
 							<input type="hidden" name="amount" value='<c:out value="${pageMaker.cri.amount }"></c:out>'>
 							<button class='btn btn-primary'>검색</button>

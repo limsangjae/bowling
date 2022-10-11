@@ -37,6 +37,7 @@ import com.bowling.domain.vo.BookingVO;
 import com.bowling.domain.vo.Criteria;
 import com.bowling.domain.vo.MemberVO;
 import com.bowling.domain.vo.PageDTO;
+import com.bowling.domain.vo.SearchVO;
 import com.bowling.service.AlleyService;
 import com.bowling.service.AttachService;
 
@@ -45,7 +46,7 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @RequestMapping("/alley")
 @Log4j
-public class AlleyController {
+public class AlleyController<E> {
 	
 	@Autowired
 	private AlleyService alleyService;
@@ -76,9 +77,9 @@ public class AlleyController {
 	
 	//볼링장 목록
 	@GetMapping("/list")
-	public void listGET(Criteria cri, Model model) throws Exception {
+	public void listGET(Criteria cri, Model model,SearchVO searchVO) throws Exception {
 		log.info("볼링장 목록 페이지 접속");
-		
+
 		//볼링장 목록 출력 데이터
 		List list =  alleyService.alleyList(cri);
 		
@@ -86,7 +87,7 @@ public class AlleyController {
 			model.addAttribute("list",list);	
 		} else {
 			model.addAttribute("listCheck", "empty");	
-		}		
+		}	
 		
 		//페이지 이동 인터페이스 데이터
 		int total = alleyService.alleyTotal(cri);
@@ -94,6 +95,23 @@ public class AlleyController {
 		PageDTO pageMaker = new PageDTO(cri, total);
 		
 		model.addAttribute("pageMaker", pageMaker);
+		
+		searchVO.setAlleyName(cri.getKeyword());
+		
+		//사용자가 입력한 값에 해당되는 예약 인원의 총합
+		int bookingCnt = alleyService.bookingTotalCnt(searchVO);
+		System.out.println(bookingCnt);
+		
+		//사용자가 입력한 값으로 찾은 볼링장들의 목록
+		List<AlleyVO> searchInfo = alleyService.searchAlleyInfo(searchVO);
+//		for(AlleyVO s : searchInfo) {
+//			System.out.println(s);
+//		}
+		
+		for(int i = 0; i < searchInfo.size(); i++) {
+			searchInfo.get(i).getAlleyRain();
+		}
+
 	}
 	
 	//볼링장 상세보기, 수정

@@ -68,7 +68,12 @@ public class BookingController {
 	@ResponseBody
 	public Map<String, Object >bookingDetail(@ModelAttribute BookingVO vo) {
 		
+		
 		Map<String, Object> result = bookingService.bookingDetail(vo);
+		
+
+		System.out.println(result);
+		
 		
 		return result;
 	}
@@ -79,14 +84,14 @@ public class BookingController {
 		return bookingService.bookingDelete(vo);
 	}
 	
-	@PostMapping(value="/selectBooking",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public List<BookingVO> selectBooking(@ModelAttribute BookingVO vo) {
-
-		return bookingService.selectBooking(vo);
-	}
-	
-	
+//	@PostMapping(value="/selectBooking",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//	@ResponseBody
+//	public List<BookingVO> selectBooking(@ModelAttribute BookingVO vo) {
+//
+//		return bookingService.selectBooking(vo);
+//	}
+//	
+//	
 	
 	
 }
