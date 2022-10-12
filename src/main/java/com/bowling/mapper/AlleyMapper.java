@@ -18,7 +18,7 @@ public interface AlleyMapper {
 	public void alleyRegister(AlleyVO alleyVO);
 	
 	//볼링장 목록
-	public List<AlleyVO> alleyList(Criteria cri);
+	public List<AlleyVO> alleyList();
 	
 	//볼링장 총 개수
 	public int alleyTotal(Criteria cri);
@@ -44,8 +44,6 @@ public interface AlleyMapper {
 	//회원등급 조건 체크
 	public int MemberGradeCk(BookingVO bookingVO);
 	
-	//사용자가 입력한 값에 해당되는 예약 횟수의 총합
-	public int bookingTotalCnt(SearchVO searchVO);
 	
 	//사용자가 입력한 값으로 찾은 볼링장들의 목록
 	public List<AlleyVO> searchAlleyInfo(SearchVO searchVO);

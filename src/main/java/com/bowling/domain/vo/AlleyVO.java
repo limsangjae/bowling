@@ -23,6 +23,9 @@ public class AlleyVO {
 	private String firstRegistId; //최초등록Id 
 	private String lastUpdtTm;   // 수정일일
 	private String lastUpdtId;   // 수정Id
+	private int total;
+	private int allowPerson;
+	
 	
 	//이미지 정보
 	private List<AttachImageVO> imageList;

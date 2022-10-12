@@ -42,18 +42,25 @@
 <!-- 					</form> -->
 <!-- 				</div> -->
 
-				<div class="col-lg-9 text-center">
+				<div class="col-lg-6 text-center">
 					<h1 class="heading" data-aos="fade-up">볼링장 검색</h1>
-					<form id="searchForm" action="/alley/list" method="get" class="narrow-w form-search d-flex align-items-stretch mb-3"data-aos="fade-up" data-aos-delay="200">
-							<input type="text" class="form-control px-4" name="keyword" placeholder="볼링장 이름" value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
-							<input type="text" class="form-control px-4" name="localName" placeholder="지역명" value='<c:out value=""></c:out>'>
-							<input type="text" class="form-control px-4" name="boDate" placeholder="날짜" value='<c:out value=""></c:out>'>
-							<input type="text" class="form-control px-4" name="boTime" placeholder="시간" value='<c:out value=""></c:out>'>
-							<input type="text" class="form-control px-4" name="totalCnt" placeholder="인원" value='<c:out value=""></c:out>'>
-							<input type="text" class="form-control px-4" name="boGame" placeholder="게임수" value='<c:out value=""></c:out>'>
+					<form id="searchForm" action="/alley/list" method="get" class="form-search mb-3"data-aos="fade-up" data-aos-delay="200">
+						<div class="search_section">
+							<input type="text" class="form-control px-4" name="keyword" id="keyword" placeholder="볼링장 이름" value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+							<span class="search_section_span">or</span>
+							<input type="text" class="form-control px-4" name="localName" id="localName" placeholder="지역명" value='<c:out value="${list.localName}"></c:out>'>
+						</div>
+						<div class="search_section">
+							<input type="text" class="datepicker form-control px-4" name="boDate" id="boDate" placeholder="날짜" autocomplete='off' value='<c:out value="${list.boDate}"></c:out>'>
+							<input type="text" class="form-control px-4" name="boTime" id="boTime" placeholder="시간" value='<c:out value="${list.boTime}"></c:out>'>
+							<input type="text" class="form-control px-4" name="totalCnt" id="totalCnt" placeholder="인원" value='<c:out value="${list.totalCnt}"></c:out>'>
+							<input type="text" class="form-control px-4" name="boGame" id="boGame" placeholder="게임수" value='<c:out value="${list.boGame}"></c:out>'>
+						</div>
+						<div class="search_section">
+							<button class='btn btn-primary search_buuton'>검색</button>
+						</div>
 							<input type="hidden" name="pageNum"value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
 							<input type="hidden" name="amount" value='<c:out value="${pageMaker.cri.amount }"></c:out>'>
-							<button class='btn btn-primary'>검색</button>
 					</form>
 				</div>
 
@@ -73,6 +80,23 @@
 	<%@ include file = "include/js.jsp" %>
     <script>
     
+    $.datepicker.setDefaults({
+	    dateFormat: 'yy-mm-dd',
+	    prevText: '이전 달',
+	    nextText: '다음 달',
+	    monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	    monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	    dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+	    dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+	    dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+	    showMonthAfterYear: true,
+	    yearSuffix: '년',
+	    minDate:0
+	});
+    
+    $('.datepicker').datepicker()
+    
+    
 	let searchForm = $('#searchForm');
 	let moveForm = $('#moveForm');
 	$("#searchForm button").on("click", function(e){
@@ -80,10 +104,28 @@
 		e.preventDefault();
 		
 		/* 검색 키워드 유효성 검사 */
-		if(!searchForm.find("input[name='keyword']").val()){
-			alert("키워드를 입력하십시오");
+		if(!$("#keyword").val() && !$("#localName").val()){
+			alert("볼링장이름 혹은 지역명을 입력하십시오");
 			return false;
 		}
+		
+		if(!$("#boDate").val()){
+			alert("날짜를 입력하십시오");
+			return false;
+		}
+		if(!$("#boTime").val()){
+			alert("시간를 입력하십시오");
+			return false;
+		}
+		if(!$("#totalCnt").val()){
+			alert("인원수를 입력하십시오");
+			return false;
+		}
+		if(!$("#boGame").val()){
+			alert("게임수를 입력하십시오");
+			return false;
+		}
+		
 		
 		searchForm.find("input[name='pageNum']").val("1");
 		searchForm.find("input[name='amount']").val("9");

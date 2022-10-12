@@ -81,14 +81,19 @@ public class AlleyController<E> {
 		log.info("볼링장 목록 페이지 접속");
 
 		//볼링장 목록 출력 데이터
-		List list =  alleyService.alleyList(cri);
+//		List<AlleyVO> alleyList = alleyService.alleyList();
+//		model.addAttribute("list", alleyList);
 		
-		if(!list.isEmpty()) {
-			model.addAttribute("list",list);	
+		//사용자가 입력한 값으로 찾은 볼링장들의 목록
+		List<AlleyVO> searchInfo = alleyService.searchAlleyInfo(searchVO);
+		model.addAttribute("list", searchInfo);
+		
+		
+		if(!searchInfo.isEmpty()) {
+			model.addAttribute("list",searchInfo);	
 		} else {
 			model.addAttribute("listCheck", "empty");	
 		}	
-		
 		//페이지 이동 인터페이스 데이터
 		int total = alleyService.alleyTotal(cri);
 		
@@ -96,21 +101,7 @@ public class AlleyController<E> {
 		
 		model.addAttribute("pageMaker", pageMaker);
 		
-		searchVO.setAlleyName(cri.getKeyword());
-		
-		//사용자가 입력한 값에 해당되는 예약 인원의 총합
-		int bookingCnt = alleyService.bookingTotalCnt(searchVO);
-		System.out.println(bookingCnt);
-		
-		//사용자가 입력한 값으로 찾은 볼링장들의 목록
-		List<AlleyVO> searchInfo = alleyService.searchAlleyInfo(searchVO);
-//		for(AlleyVO s : searchInfo) {
-//			System.out.println(s);
-//		}
-		
-		for(int i = 0; i < searchInfo.size(); i++) {
-			searchInfo.get(i).getAlleyRain();
-		}
+
 
 	}
 	

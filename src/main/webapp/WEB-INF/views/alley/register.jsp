@@ -47,12 +47,11 @@
 						<div class="row justify-content-between">
 							<div class="col-lg-7">
 								<div class="col-10 mb-3">
-									<b>볼링장 이름</b>
-
-									<input name="alleyName" class="form-control" placeholder="볼링장 이름">
+									<b class="register_b">*볼링장 이름</b>
+									<input name="alleyName" id="alleyName" class="form-control" placeholder="볼링장 이름">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="alleyZipCode" class="form-control address_input_1" placeholder="우편번호" readonly="readonly">
+									<input name="alleyZipCode" id="alleyZipCode" class="form-control address_input_1" placeholder="우편번호" readonly="readonly">
 									<button onclick="execution_daum_address()" type="button" class="btn btn-primary addrBtn">주소 찾기</button>
 								</div>
 								<div class="col-10 mb-3">
@@ -62,30 +61,39 @@
 									<input name="alleyAddr2" class="form-control address_input_3" placeholder="상세주소" readonly="readonly">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="alleyTel" class="form-control" placeholder="전화번호">
+									<b class="register_b">*전화번호</b>
+									<input name="alleyTel" id="alleyTel" class="form-control" placeholder="전화번호">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="openTime" class="form-control" placeholder="오픈시간">
+									<b class="register_b">*오픈시간</b>
+									<input name="openTime" id="openTime"class="form-control" placeholder="오픈시간">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="closeTime" class="form-control" placeholder="마감시간">
+									<b class="register_b">*마감시간</b>
+									<input name="closeTime" id="closeTime" class="form-control" placeholder="마감시간">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="priceNomarl" class="form-control" placeholder="일반가격">
+									<b class="register_b">*일반가격</b>
+									<input name="priceNomarl" id="priceNomarl" class="form-control" placeholder="일반가격">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="priceClub" class="form-control" placeholder="클럽가격">
+									<b class="register_b">*클럽가격</b>
+									<input name="priceClub" id="priceClub"class="form-control" placeholder="클럽가격">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="priceStudent" class="form-control" placeholder="학생가격">
+									<b class="register_b">*학생가격</b>
+									<input name="priceStudent" id="priceStudent" class="form-control" placeholder="학생가격">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="alleyRain" class="form-control" placeholder="레인개수">
+									<b class="register_b">*레인개수</b>
+									<input name="alleyRain" id="alleyRain" class="form-control" placeholder="레인개수">
 								</div>
 								<div class="col-10 mb-3">
-									<textarea name="alleyContent" id="alleyContent_textarea" class="form-control" placeholder="볼링장 소개"></textarea>
+									<b class="register_b">볼링장 소개</b>
+									<textarea name="alleyContent"id="alleyContent_textarea" class="form-control" placeholder="볼링장 소개"></textarea>
 								</div> 
 								<div class="col-10 mb-3">
+									<b class="register_b">볼링장 사진</b>
 									<input type="file" multiple="multiple" id ="fileItem" name="uploadFile" class="form-control">
 								</div>
 								<input type="hidden" name="firstRegistId" value="${memberVO.memberId}">
@@ -123,7 +131,11 @@
     <%@ include file = "../include/js.jsp" %>
     
     <script>
-    	var registerForm = $("#registerForm")
+    /* 유효성 검사 */	
+    
+    
+    
+    var registerForm = $("#registerForm")
     	
     	/* 볼링장 등록 버튼 */
     	$("#registerBtn").on("click",function(e){

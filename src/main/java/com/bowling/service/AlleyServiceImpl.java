@@ -42,9 +42,9 @@ public class AlleyServiceImpl implements AlleyService {
 	}
 
 	@Override
-	public List<AlleyVO> alleyList(Criteria cri) throws Exception {
+	public List<AlleyVO> alleyList() throws Exception {
 		
-		List<AlleyVO> list = alleyMapper.alleyList(cri);
+		List<AlleyVO> list = alleyMapper.alleyList();
 		
 		list.forEach(alley -> {
 			int alleySeq = alley.getAlleySeq();
@@ -56,6 +56,7 @@ public class AlleyServiceImpl implements AlleyService {
 		});
 		
 		return list;
+		
 	}
 
 	@Override
@@ -103,14 +104,27 @@ public class AlleyServiceImpl implements AlleyService {
 		return alleyMapper.MemberGradeCk(bookingVO);
 	}
 
-	@Override
-	public int bookingTotalCnt(SearchVO searchVO) {
-		return alleyMapper.bookingTotalCnt(searchVO);
-	}
+	
 
 	@Override
 	public List<AlleyVO> searchAlleyInfo(SearchVO searchVO) {
-		return alleyMapper.searchAlleyInfo(searchVO);
+		
+		List<AlleyVO> list = alleyMapper.searchAlleyInfo(searchVO);
+		
+		list.forEach(alley -> {
+			int alleySeq = alley.getAlleySeq();
+			
+			List<AttachImageVO> imageList = attachMapper.getAttachList(alleySeq);
+			
+			alley.setImageList(imageList);
+			
+		});
+		
+		
+		
+		
+		return list;
+		
 	}
 
 }

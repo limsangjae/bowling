@@ -12,14 +12,9 @@
 	<!-- 볼링장 리스트 -->
 	
     <select id="alleyList" resultMap="AlleyVO">
-   
        select  ALLEY_NAME, ALLEY_ADDR1,ALLEY_ADDR2, ALLEY_TEL, OPEN_TIME, CLOSE_TIME,PRICE_NOMARL,PRICE_CLUB,PRICE_STUDENT,ALLEY_SEQ
        from ALLEY 
-       <if test="keyword != null">
-           where ALLEY_NAME like CONCAT('%',#{keyword}, '%')
-       </if>
        order by ALLEY_SEQ DESC 
-       limit #{skip}, #{amount}    
     </select>
 	
 <!-- 	<select id="alleyList" resultMap="AlleyVO"> -->
@@ -104,20 +99,39 @@
 		WHERE DATE_ADD(NOW(), INTERVAL -3 MONTH) AND MEMBER_ID = #{memberId} AND alley_seq = #{alleySeq}
 	</select>
 	
-	<!-- 예약된 총 횟수 -->
-	<select id="bookingTotalCnt" resultType="int">
-		SELECT SUM(b.PUBLIC_CNT+ b.CLUB_CNT+ b.STUDENT_CNT) AS total
-		FROM booking b
-		LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ
-		WHERE b.BO_TIME = #{boTime} AND b.BO_DATE = #{boDate} AND (a.ALLEY_NAME LIKE '%'||#{alleyName}||'%' OR a.ALLEY_ADDR1 LIKE '%'||#{localName}||'%')
-	</select>
+	
+<!-- 	<select id="searchAlleyInfo" resultMap="AlleyVO"> -->
+<!-- 		<choose> -->
+<!-- 			<when test="boTime != null and boDate != null and (alleyName != null or localName != null)"> -->
+<!-- 				SELECT (b.PUBLIC_CNT+ b.CLUB_CNT+ b.STUDENT_CNT) AS total,b.ALLEY_SEQ ,a.ALLEY_NAME,(a.ALLEY_RAIN*5) AS allowPerson,a.ALLEY_ADDR1,a.ALLEY_ADDR2, a.ALLEY_TEL, a.OPEN_TIME, a.CLOSE_TIME -->
+<!-- 				FROM booking b -->
+<!-- 				LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ -->
+<!-- 				WHERE b.BO_TIME = #{boTime} AND b.BO_DATE = #{boDate} AND (a.ALLEY_NAME LIKE '%'||#{alleyName}||'%' OR a.ALLEY_ADDR1 LIKE '%'||#{localName}||'%') -->
+<!-- 				order by ALLEY_SEQ DESC -->
+<!-- 			</when> -->
+<!-- 			<otherwise> -->
+<!-- 				select  ALLEY_NAME, ALLEY_ADDR1,ALLEY_ADDR2, ALLEY_TEL, OPEN_TIME, CLOSE_TIME,PRICE_NOMARL,PRICE_CLUB,PRICE_STUDENT,ALLEY_SEQ -->
+<!-- 		        from ALLEY  -->
+<!-- 		        order by ALLEY_SEQ DESC  -->
+<!-- 			</otherwise> -->
+<!-- 		</choose> -->
+<!-- 	</select> -->
+	
 	
 	<select id="searchAlleyInfo" resultMap="AlleyVO">
-		SELECT a.*
+		SELECT *
+		FROM alley
+		WHERE ALLEY_SEQ NOT IN (
+		SELECT a.ALLEY_SEQ from
+		(SELECT (b.PUBLIC_CNT+ b.CLUB_CNT+ b.STUDENT_CNT) AS total, b.ALLEY_SEQ , a.ALLEY_NAME,(a.ALLEY_RAIN*5) AS allowPerson
 		FROM booking b
 		LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ
 		WHERE b.BO_TIME = #{boTime} AND b.BO_DATE = #{boDate} AND (a.ALLEY_NAME LIKE '%'||#{alleyName}||'%' OR a.ALLEY_ADDR1 LIKE '%'||#{localName}||'%')
+		) a
+		WHERE total > allowPerson
+		)
 	</select>
+	
 	
 	<resultMap id="AlleyVO" type="com.bowling.domain.vo.AlleyVO">
       <result property="alleySeq" column="ALLEY_SEQ" />
@@ -137,6 +151,8 @@
       <result property="firstRegistId" column="FIRST_REGIST_ID" />
       <result property="lastUpdtTm" column="LAST_UPDT_TM" />
       <result property="lastUpdtId" column="LAST_UPDT_ID" />
+      <result property="total" column="total" />
+      <result property="allowPerson" column="allowPerson" />
    </resultMap>
    
    <resultMap id="AlleyMemberGradeVO" type="com.bowling.domain.vo.AlleyMemberGradeVO">

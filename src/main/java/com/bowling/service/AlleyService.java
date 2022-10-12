@@ -14,7 +14,7 @@ public interface AlleyService {
 	public void alleyRegister(AlleyVO alleyVO) throws Exception;
 	
 	//볼링장 목록
-	public List<AlleyVO> alleyList(Criteria cri) throws Exception;
+	public List<AlleyVO> alleyList() throws Exception;
 	
 	//볼링장 총 수
 	public int alleyTotal(Criteria cri) throws Exception;
@@ -33,9 +33,6 @@ public interface AlleyService {
 	
 	//회원등급 조건 체크
 	public int MemberGradeCk(BookingVO bookingVO);
-
-	//사용자가 입력한 값에 해당되는 예약 횟수의 총합
-	public int bookingTotalCnt(SearchVO searchVO);
 	
 	//사용자가 입력한 값으로 찾은 볼링장들의 목록
 	public List<AlleyVO> searchAlleyInfo(SearchVO searchVO);
