@@ -132,6 +132,15 @@
     
     <script>
     /* 유효성 검사 */	
+    var alleyName = $("#alleyName").val();
+    var alleyZipCode = $("#alleyZipCode").val();
+    var alleyTel = $("#alleyTel").val();
+    var openTime = $("#openTime").val();
+    var closeTime = $("#closeTime").val();
+    var priceNomarl = $("#priceNomarl").val();
+    var priceClub = $("#priceClub").val();
+    var priceStudent = $("#priceStudent").val();
+    var alleyRain = $("#alleyRain").val();
     
     
     
