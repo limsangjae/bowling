@@ -66,6 +66,7 @@
 
 			</div>
 		</div>
+
 	</div>
 
     <!-- Preloader -->
@@ -78,6 +79,7 @@
 
 	<!-- script -->
 	<%@ include file = "include/js.jsp" %>
+	
     <script>
     
     $.datepicker.setDefaults({
