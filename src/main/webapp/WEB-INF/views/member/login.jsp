@@ -59,7 +59,7 @@
             </div>
             <b class="name">*생년월일</b>
             <div class="input-group">
-              <input class="datepicker age_input" id="memberBirth" name="dateBirth"  value="" autocomplete='off' placeholder="숫자만 입력 가능">
+              <input class="datepicker age_input" id="memberBirth" name="dateBirth" readonly="readonly"  value="" autocomplete='off'>
             </div>
             <b class="name">*전화번호</b>
             <div class="input-group">

@@ -51,10 +51,10 @@
 							<input type="text" class="form-control px-4" name="localName" id="localName" placeholder="지역명" value='<c:out value="${list.localName}"></c:out>'>
 						</div>
 						<div class="search_section">
-							<input type="text" class="datepicker form-control px-4" name="boDate" id="boDate" placeholder="날짜" autocomplete='off' value='<c:out value="${list.boDate}"></c:out>'>
-							<input type="text" class="form-control px-4" name="boTime" id="boTime" placeholder="시간" value='<c:out value="${list.boTime}"></c:out>'>
-							<input type="text" class="form-control px-4" name="totalCnt" id="totalCnt" placeholder="인원" value='<c:out value="${list.totalCnt}"></c:out>'>
-							<input type="text" class="form-control px-4" name="boGame" id="boGame" placeholder="게임수" value='<c:out value="${list.boGame}"></c:out>'>
+							<input type="text" class="datepicker form-control px-4" name="boDate" id="boDate" readonly="readonly" placeholder="날짜" autocomplete='off' value='<c:out value="${list.boDate}"></c:out>'>
+							<input type="text" class="form-control px-4" name="boTime" id="boTime" placeholder="시간(24시간)" oninput="boTimeInput()" maxlength="5" value='<c:out value="${list.boTime}"></c:out>'>
+							<input type="text" class="form-control px-4" name="totalCnt" id="totalCnt" placeholder="인원" oninput="totalCntInput()" maxlength="2" value='<c:out value="${list.totalCnt}"></c:out>'>
+							<input type="text" class="form-control px-4" name="boGame" id="boGame" placeholder="게임수" oninput="boGameInput()" maxlength="2" value='<c:out value="${list.boGame}"></c:out>'>
 						</div>
 						<div class="search_section">
 							<button class='btn btn-primary search_buuton'>검색</button>
@@ -125,7 +125,9 @@
 			alert("게임수를 입력하십시오");
 			return false;
 		}
-		
+		var boTime = $("#boTime").val()
+		boTime = boTime.replace(boTime,boTime + ":00");
+		$("#boTime").val(boTime);
 		
 		searchForm.find("input[name='pageNum']").val("1");
 		searchForm.find("input[name='amount']").val("9");
@@ -133,6 +135,34 @@
 		
 	});
 	
+	
+	
+	function boTimeInput(){
+		var onlyNum = /[0-9]/;
+		var boTime = $("#boTime").val()
+		
+		if(!onlyNum.test(boTime)){
+			$("#boTime").val("");
+		}
+	}
+	
+	function totalCntInput(){
+		var onlyNum = /[0-9]/;
+		var totalCnt = $("#totalCnt").val()
+		
+		if(!onlyNum.test(totalCnt)){
+			$("#totalCnt").val("");
+		}
+	}
+	
+	function boGameInput(){
+		var onlyNum = /[0-9]/;
+		var boGame = $("#boGame").val()
+		
+		if(!onlyNum.test(boGame)){
+			$("#boGame").val("");
+		}
+	}
 	
 	
     </script>
