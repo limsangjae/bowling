@@ -43,13 +43,14 @@
 		<div class="container">
 			<div class="row">
 				<div data-aos="fade-up" data-aos-delay="200">
-					<form action="/alley/register.do" method="post" id="registerForm">
+					<form action="/alley/register.do" method="post" id="registerForm" enctype="multipart/form-data">
 						<div class="row justify-content-between">
 							<div class="col-lg-7">
 								<div class="col-10 mb-3">
 									<b class="register_b">*볼링장 이름</b>
 									<input name="alleyName" id="alleyName" class="form-control" placeholder="볼링장 이름">
 								</div>
+									<b class="register_b">*주소</b>
 								<div class="col-10 mb-3">
 									<input name="alleyZipCode" id="alleyZipCode" class="form-control address_input_1" placeholder="우편번호" readonly="readonly">
 									<button onclick="execution_daum_address()" type="button" class="btn btn-primary addrBtn">주소 찾기</button>
@@ -62,31 +63,31 @@
 								</div>
 								<div class="col-10 mb-3">
 									<b class="register_b">*전화번호</b>
-									<input name="alleyTel" id="alleyTel" class="form-control" placeholder="전화번호">
+									<input name="alleyTel" id="alleyTel" class="form-control phoneNumber" maxlength="13"  placeholder="전화번호">
 								</div>
 								<div class="col-10 mb-3">
 									<b class="register_b">*오픈시간</b>
-									<input name="openTime" id="openTime"class="form-control" placeholder="오픈시간">
+									<input name="openTime" id="openTime"class="form-control" oninput="numinput()" maxlength="2" placeholder="오픈시간(24시간)">
 								</div>
 								<div class="col-10 mb-3">
 									<b class="register_b">*마감시간</b>
-									<input name="closeTime" id="closeTime" class="form-control" placeholder="마감시간">
+									<input name="closeTime" id="closeTime" class="form-control" oninput="numinput()" maxlength="2" placeholder="마감시간(24시간)">
 								</div>
 								<div class="col-10 mb-3">
 									<b class="register_b">*일반가격</b>
-									<input name="priceNomarl" id="priceNomarl" class="form-control" placeholder="일반가격">
+									<input name="priceNomarl" id="priceNomarl" class="form-control" oninput="numinput()" maxlength="5" placeholder="일반가격">
 								</div>
 								<div class="col-10 mb-3">
 									<b class="register_b">*클럽가격</b>
-									<input name="priceClub" id="priceClub"class="form-control" placeholder="클럽가격">
+									<input name="priceClub" id="priceClub"class="form-control" oninput="numinput()" maxlength="5" placeholder="클럽가격">
 								</div>
 								<div class="col-10 mb-3">
 									<b class="register_b">*학생가격</b>
-									<input name="priceStudent" id="priceStudent" class="form-control" placeholder="학생가격">
+									<input name="priceStudent" id="priceStudent" class="form-control" oninput="numinput()" maxlength="5" placeholder="학생가격">
 								</div>
 								<div class="col-10 mb-3">
 									<b class="register_b">*레인개수</b>
-									<input name="alleyRain" id="alleyRain" class="form-control" placeholder="레인개수">
+									<input name="alleyRain" id="alleyRain" class="form-control" oninput="numinput()" maxlength="2" placeholder="레인개수">
 								</div>
 								<div class="col-10 mb-3">
 									<b class="register_b">볼링장 소개</b>
@@ -94,7 +95,7 @@
 								</div> 
 								<div class="col-10 mb-3">
 									<b class="register_b">볼링장 사진</b>
-									<input type="file" multiple="multiple" id ="fileItem" name="uploadFile" class="form-control">
+									<input type="file" multiple id ="fileItem" name="uploadFile" class="form-control">
 								</div>
 								<input type="hidden" name="firstRegistId" value="${memberVO.memberId}">
 								<input type="hidden" name="lastUpdtId" value="${memberVO.memberId}">
@@ -132,16 +133,41 @@
     
     <script>
     /* 유효성 검사 */	
-    var alleyName = $("#alleyName").val();
-    var alleyZipCode = $("#alleyZipCode").val();
-    var alleyTel = $("#alleyTel").val();
-    var openTime = $("#openTime").val();
-    var closeTime = $("#closeTime").val();
-    var priceNomarl = $("#priceNomarl").val();
-    var priceClub = $("#priceClub").val();
-    var priceStudent = $("#priceStudent").val();
-    var alleyRain = $("#alleyRain").val();
+
     
+    /*전화번호 자동 하이픈 입력*/
+    $(document).on("keyup", ".phoneNumber", function(){ 
+	$(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") );});
+    
+    
+    function numinput(){
+    	var numinput = /[0-9]/;
+        var openTime = $("#openTime").val();
+        var closeTime = $("#closeTime").val();
+        var priceNomarl = $("#priceNomarl").val();
+        var priceClub = $("#priceClub").val();
+        var priceStudent = $("#priceStudent").val();
+        var alleyRain = $("#alleyRain").val();
+    	
+    	if(!numinput.test(openTime)){
+    		$("#openTime").val("");
+    	}
+    	if(!numinput.test(closeTime)){
+    		$("#closeTime").val("");
+    	}
+    	if(!numinput.test(priceNomarl)){
+    		$("#priceNomarl").val("");
+    	}
+    	if(!numinput.test(priceClub)){
+    		$("#priceClub").val("");
+    	}
+    	if(!numinput.test(priceStudent)){
+    		$("#priceStudent").val("");
+    	}
+    	if(!numinput.test(alleyRain)){
+    		$("#alleyRain").val("");
+    	}
+    }
     
     
     var registerForm = $("#registerForm")
@@ -149,7 +175,54 @@
     	/* 볼링장 등록 버튼 */
     	$("#registerBtn").on("click",function(e){
     		
+    		if($("#alleyName").val() == ""){
+    			$("#alleyName").focus();
+    			alert("볼링장 이름을 입력해 주세요.")
+    			return false;
+    		}
+    		if($("#alleyZipCode").val() == ""){
+    			$("#alleyZipCode").focus();
+    			alert("주소를 입력해 주세요.")
+    			return false;
+    		}
+    		if($("#alleyTel").val() == ""){
+    			$("#alleyTel").focus();
+    			alert("전화번로를 입력해 주세요.")
+    			return false;
+    		}
+    		if($("#openTime").val() == ""){
+    			$("#openTime").focus();
+    			alert("오픈 시간을 입력해 주세요.")
+    			return false;
+    		}
+    		if($("#closeTime").val() == ""){
+    			$("#closeTime").focus();
+    			alert("마감 시간을 입력해 주세요.")
+    			return false;
+    		}
+    		if($("#priceNomarl").val() == ""){
+    			$("#priceNomarl").focus();
+    			alert("일반 가격을 입력해 주세요.")
+    			return false;
+    		}
+    		if($("#priceClub").val() == ""){
+    			$("#priceClub").focus();
+    			alert("클럽 가격을 입력해 주세요.")
+    			return false;
+    		}
+    		if($("#priceStudent").val() == ""){
+    			$("#priceStudent").focus();
+    			alert("학생 가격을 입력해 주세요.")
+    			return false;
+    		}
+    		if($("#alleyRain").val() == ""){
+    			$("#alleyRain").focus();
+    			alert("레인 개수를 입력해 주세요.")
+    			return false;
+    		}
+    		
     		e.preventDefault();
+    		
     		
     		registerForm.submit();
     	});
@@ -221,15 +294,16 @@
     			console.error(error);
     		});
     	
+    	
     	/* 이미지 업로드 */
     	$("input[type='file']").on("change", function(e){
     		
-
     		
     		let formData = new FormData();
     		let fileInput = $('input[name="uploadFile"]');
     		let fileList = fileInput[0].files;
     		let fileObj = fileList[0];
+    		
     		
     		if(!fileCheck(fileObj.name, fileObj.size)){
     			return false;
@@ -237,6 +311,8 @@
     		for(let i = 0; i < fileList.length; i++){
     			formData.append("uploadFile", fileList[i]);
     		}
+    		
+    		
     		$.ajax({
     			url: '/alley/uploadAjaxAction',
     	    	processData : false,
@@ -280,22 +356,22 @@
 
     		/* 전달받은 데이터 검증 */
     		if(!uploadResultArr || uploadResultArr.length == 0){return}
-    		
-	    	let uploadResult = $("#uploadResult");
 	    	
 	    	let obj = uploadResultArr[0];
 	    	
+	    	let uploadResult = $("#uploadResult");
+
 	    	let str = "";
 	    	
 	    	let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
 	    	
 	    	str += "<div id='result_card'>";
 			str += "<img src='display?fileName=" + fileCallPath +"' class='img-fluid mb-2'>";
-			str += "<div class='imgDeleteBtn' data-file='"+ fileCallPath +"'><i class='bi bi-x-circle'></i></div>";
-			str += "</div>";
+			str += "<div class='imgDeleteBtn' data-file='"+ fileCallPath +"'>X<i class='bi bi-x-circle'></i></div>";
 			str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
 			str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
 			str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";
+			str += "</div>";
 			
 			uploadResult.append(str);
     	}

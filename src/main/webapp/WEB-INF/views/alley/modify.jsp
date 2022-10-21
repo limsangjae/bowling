@@ -92,6 +92,12 @@
 							<div class="img-about" id="uploadResult">
 
 							</div>
+							<div class="img-about" id="uploadResult1">
+
+							</div>
+							<div class="img-about" id="uploadResult2">
+
+							</div>
 						</div>
 						</div>
 						<input type="hidden" name="alleySeq" value="${alleyInfo.alleySeq}">
@@ -105,7 +111,7 @@
 				<form id="moveForm" action="/alley/list" method="get" >
 					<input type="hidden" name="pageNum" value="${cri.pageNum}">
 					<input type="hidden" name="amount" value="${cri.amount}">
-					<input type="hidden" name="keyword" value="${cri.keyword}">
+					<input type="hidden" name="alleyName" value="${cri.alleyName}">
 					<input type="hidden" name='alleySeq' value="${alleyInfo.alleySeq}">
                	</form> 
 			</div>
@@ -212,37 +218,24 @@
     		moveForm.submit();
     	});
     	
-    	/* 이미지 삭제 버튼 동작 */
-    	$("#uploadResult").on("click", ".imgDeleteBtn", function(e){
-    		
-    		deleteFile();
-    		
-    	});
-    	
-    	/* 파일 삭제 메서드 */
-    	function deleteFile(){
-    		
-    		$("#result_card").remove();
-    	}
     	
     	/* 이미지 업로드 */
     	$("input[type='file']").on("change", function(e){
     		
-    		/* 이미지 존재시 삭제 */
-    		if($("#result_card").length > 0){
-    			deleteFile();
-    		}
-    				
+    		
     		let formData = new FormData();
     		let fileInput = $('input[name="uploadFile"]');
     		let fileList = fileInput[0].files;
     		let fileObj = fileList[0];
     		
+    		
     		if(!fileCheck(fileObj.name, fileObj.size)){
     			return false;
     		}
+    		for(let i = 0; i < fileList.length; i++){
+    			formData.append("uploadFile", fileList[i]);
+    		}
     		
-    		formData.append("uploadFile", fileObj);
     		
     		$.ajax({
     			url: '/alley/uploadAjaxAction',
@@ -251,16 +244,15 @@
     	    	data : formData,
     	    	type : 'POST',
     	    	dataType : 'json',
-    	    	success : function(result){
-    	    		console.log(result);
-    	    		showUploadImage(result);
-    	    	},
-    	    	error : function(result){
-    	    		alert("이미지 파일이 아닙니다.");
-    	    	}
-    		});		
-
-    		
+   		    	success : function(result){
+   		    		console.log(result);
+   		    		showUploadImage(result);
+   		    	},
+   		    	error : function(result){
+   		    		alert("이미지 파일이 아닙니다.")
+   		    	}
+    		});
+    	
     	});
     		
     	/* var, method related with attachFile */
@@ -289,9 +281,9 @@
     		/* 전달받은 데이터 검증 */
     		if(!uploadResultArr || uploadResultArr.length == 0){return}
     		
-    		let uploadResult = $("#uploadResult");
-    		
     		let obj = uploadResultArr[0];
+    		
+    		let uploadResult = $("#uploadResult");
     		
     		let str = "";
     		
@@ -299,56 +291,47 @@
     		
     		str += "<div id='result_card'>";
     		str += "<img src='display?fileName=" + fileCallPath +"' class='img-fluid mb-2'>";
-    		str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'><i class='bi bi-x-circle'></i></div>";
+    		str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>X<i class='bi bi-x-circle'></i></div>";
     		str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
     		str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
     		str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";		
     		str += "</div>";		
     		
        		uploadResult.append(str);     
+ 
             
     	}
-    	
-    	$(document).ready(function(){
-			/* 기존 이미지 출력 */
-			let alleySeq = '<c:out value="${alleyInfo.alleySeq}"/>';
-			let uploadResult = $("#uploadResult");
-			
-			$.getJSON("getAttachList", {alleySeq : alleySeq}, function(arr){
-				
-				console.log(arr);
-				
-				if(arr.length === 0){
-					
-					
-					let str = "";
-					str += "<div id='result_card'>";
-					str += "<img src='${path}/resources/images/Noimg.png' class='img-fluid'>";
-					str += "</div>";
-					
-					uploadResult.html(str);				
-					return;
-				}
-				
-				let str = "";
-				let obj = arr[0];
-				
-				let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
-				str += "<div id='result_card'";
-				str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "'";
-				str += ">";
-				str += "<img src='display?fileName=" + fileCallPath +"'class='img-fluid mb-2'>";
-				str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'><i class='bi bi-x-circle'></i></div>";
-				str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
-				str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
-				str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";				
-				str += "</div>";
-				
-				uploadResult.html(str);			
-				
-			});// GetJSON
-    		
+		
+    	/* 이미지 삭제 버튼 동작 */
+    	$("#uploadResult").on("click", ".imgDeleteBtn", function(e){
+    		deleteFile();
     	});
+    	/* 파일 삭제 메서드 */
+    	function deleteFile(){
+    		
+    		let targetFile = $(".imgDeleteBtn").data("file");
+    		
+    		let targetDiv = $("#result_card");
+    		
+    		$.ajax({
+    			url: '/alley/deleteFile',
+    			data : {fileName : targetFile},
+    			dataType : 'text',
+    			type : 'POST',
+    			success : function(result){
+    				console.log(result);
+    				
+    				targetDiv.remove();
+    				$("input[type='file']").val("");
+    			},
+    			error : function(result){
+    				console.log(result);
+    				
+    				alert("파일을 삭제하지 못하였습니다.")
+    			}
+           });
+    		
+    	}
     	
     </script>
     

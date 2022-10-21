@@ -1,6 +1,7 @@
 package com.bowling.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -33,7 +34,7 @@ public interface AlleyMapper {
 	public int alleyDelete(int alleySeq);
 	
 	//이미지 등록
-	public void imageRegister(AttachImageVO vo);
+	public void imageRegister(Map attach);
 	
 	//지정 볼링장 이미지 전체 삭제
 	public void deleteImageAll(int alleySeq);
@@ -46,5 +47,5 @@ public interface AlleyMapper {
 	
 	
 	//사용자가 입력한 값으로 찾은 볼링장들의 목록
-	public List<AlleyVO> searchAlleyInfo(SearchVO searchVO);
+	public List<AlleyVO> searchAlleyInfo(Criteria cri);
 }

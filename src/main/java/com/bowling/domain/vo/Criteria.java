@@ -17,9 +17,15 @@ public class Criteria {
     /* 검색 타입 */
     private String type;
     
-    /* 검색 키워드 */
-    private String keyword;
+//    /* 검색 키워드 */
+//    private String keyword;
     
+	private String alleyAddr1; //지역명
+	private String alleyName; //볼링장이름
+	private String boDate; //예약할 날짜
+	private String boTime; //예약할 시간
+	private String boRain; //필요한 레인개수
+	
     /* Criteria 생성자 */
     public Criteria(int pageNum, int amount) {
         this.pageNum = pageNum;
@@ -29,7 +35,7 @@ public class Criteria {
     
     /* Criteria 기본 생성자 */
     public Criteria(){
-        this(1,10);
+        this(1,9);
     }
     
     /* 검색 타입 데이터 배열 변환 */

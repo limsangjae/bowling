@@ -35,31 +35,18 @@ public class BookingController {
 			bookingService.alley_grade_register(vo);
 		}
 
-		Integer result = bookingService.bookingDetailOne(vo); //사용자가 선택한 날짜와 시간에 존재하는 예약횟수의 총합
+		Integer result = bookingService.bookingDetailOne(vo); //사용자가 선택한 날짜와 시간에 존재하는 예약레인의 총합
 		if(result == null) {
 			result = 0;
 		}
 		
-		int totalCnt = vo.getTotalCnt(); // 사용자가 입력한 예약인원의 총합
-		int maxPerson = vo.getMaxPerson(); // 볼링장별 최대 수용가능인원
-		int allowPerson = maxPerson - result;
-		int gameCnt = vo.getBoGame();
+		int boRain = vo.getBoRain(); // 사용자가 입력한 레인개수
+		int maxRain = vo.getMaxRain(); // 볼링장별 최대 수용가능레인
+		int allowRain = maxRain - result;
 		
-		int gameTime = (int) Math.ceil((gameCnt * totalCnt * 15)/60);
-		
-		String getTime = vo.getBoTime().substring(0,2); 
-		int startTime = Integer.parseInt(getTime); // 사용자가 입력한 시작 시간
-		int endTime = startTime + gameTime;
-		
-		
-		if(!(totalCnt>allowPerson)) {
-			for(int i=startTime; i <= endTime; i++) {
-				vo.setBoTime(i+":00");
-				bookingService.bookingRegister(vo);
-			}
+		if(allowRain >= boRain) {
+			bookingService.bookingRegister(vo);
 		}
-		
-		
 		
 		return result;
 	}

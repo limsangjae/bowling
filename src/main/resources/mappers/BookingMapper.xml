@@ -5,8 +5,8 @@
 
 	<insert id="bookingRegister">
 		INSERT INTO booking
-		(ALLEY_SEQ, MEMBER_ID, BO_TIME, BO_DATE, BO_GAME, PUBLIC_CNT, CLUB_CNT, STUDENT_CNT, FIRST_REGIST_TM, FIRST_REGIST_ID, LAST_UPDT_TM)
-		VALUES (#{alleySeq}, #{memberId}, #{boTime}, #{boDate}, #{boGame}, #{publicCnt}, #{clubCnt}, #{studentCnt}, NOW(), #{memberId}, NOW())
+		(ALLEY_SEQ, MEMBER_ID, BO_TIME, BO_DATE, BO_GAME, PUBLIC_CNT, CLUB_CNT, STUDENT_CNT, FIRST_REGIST_TM, FIRST_REGIST_ID, LAST_UPDT_TM,BO_RAIN)
+		VALUES (#{alleySeq}, #{memberId}, #{boTime}, #{boDate}, #{boGame}, #{publicCnt}, #{clubCnt}, #{studentCnt}, NOW(), #{memberId}, NOW(),#{boRain})
 	</insert>
 	
 	<insert id="alley_grade_register">
@@ -22,29 +22,49 @@
 
 
 	<select id="bookingDetail" resultType="java.util.Map">
-		SELECT IFNULL(t09,0) AS t09, IFNULL(t10,0) AS t10, IFNULL(t11,0) AS t11, IFNULL(t12,0) AS t12, IFNULL(t13,0) AS t13, IFNULL(t14,0) AS t14, IFNULL(t15,0) AS t15, IFNULL(t16,0) AS t16
-		, IFNULL(t17,0) AS t17, IFNULL(t18,0) AS t18, IFNULL(t19,0) AS t19, IFNULL(t20,0) AS t20, IFNULL(t21,0) AS t21, IFNULL(t22,0) AS t22, IFNULL(t23,0) AS t23, IFNULL(t24,0) AS t24
+		SELECT 
+			IFNULL(t9,0) AS t9
+			,IFNULL(t10,0) AS t10
+			,IFNULL(t11,0) AS t11
+			,IFNULL(t12,0) AS t12
+			,IFNULL(t13,0) AS t13
+			,IFNULL(t14,0) AS t14
+			,IFNULL(t15,0) AS t15
+			,IFNULL(t16,0) AS t16
+			,IFNULL(t17,0) AS t17
+			,IFNULL(t18,0) AS t18
+			,IFNULL(t19,0) AS t19
+			,IFNULL(t20,0) AS t20
+			,IFNULL(t21,0) AS t21
+			,IFNULL(t22,0) AS t22
+			,IFNULL(t23,0) AS t23
+			,IFNULL(t24,0) AS t24
 		FROM 
-		( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t09 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '09:00' AND BO_DATE = #{boDate} ) t09
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t10 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '10:00' AND BO_DATE = #{boDate} ) t10
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t11 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '11:00' AND BO_DATE = #{boDate} ) t11
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t12 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '12:00' AND BO_DATE = #{boDate} ) t12
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t13 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '13:00' AND BO_DATE = #{boDate} ) t13
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t14 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '14:00' AND BO_DATE = #{boDate} ) t14
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t15 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '15:00' AND BO_DATE = #{boDate} ) t15
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t16 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '16:00' AND BO_DATE = #{boDate} ) t16
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t17 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '17:00' AND BO_DATE = #{boDate} ) t17
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t18 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '18:00' AND BO_DATE = #{boDate} ) t18
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t19 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '19:00' AND BO_DATE = #{boDate} ) t19
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t20 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '20:00' AND BO_DATE = #{boDate} ) t20
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t21 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '21:00' AND BO_DATE = #{boDate} ) t21
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t22 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '22:00' AND BO_DATE = #{boDate} ) t22
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t23 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '23:00' AND BO_DATE = #{boDate} ) t23
-		,( SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS t24 FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = '24:00' AND BO_DATE = #{boDate} ) t24
+			( SELECT (sum(b.BO_RAIN))AS t9 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '9:00' AND bo_date = #{boDate} ) t09
+			,( SELECT (sum(b.BO_RAIN))AS t10 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '10:00' AND bo_date = #{boDate} ) t10
+			,( SELECT (sum(b.BO_RAIN))AS t11 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '11:00' AND bo_date = #{boDate} ) t11
+			,( SELECT (sum(b.BO_RAIN))AS t12 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '12:00' AND bo_date = #{boDate} ) t12
+			,( SELECT (sum(b.BO_RAIN))AS t13 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '13:00' AND bo_date = #{boDate} ) t13
+			,( SELECT (sum(b.BO_RAIN))AS t14 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '14:00' AND bo_date = #{boDate} ) t14
+			,( SELECT (sum(b.BO_RAIN))AS t15 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '15:00' AND bo_date = #{boDate} ) t15
+			,( SELECT (sum(b.BO_RAIN))AS t16 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '16:00' AND bo_date = #{boDate} ) t16
+			,( SELECT (sum(b.BO_RAIN))AS t17 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '17:00' AND bo_date = #{boDate} ) t17
+			,( SELECT (sum(b.BO_RAIN))AS t18 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '18:00' AND bo_date = #{boDate} ) t18
+			,( SELECT (sum(b.BO_RAIN))AS t19 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '19:00' AND bo_date = #{boDate} ) t19
+			,( SELECT (sum(b.BO_RAIN))AS t20 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '20:00' AND bo_date = #{boDate} ) t20
+			,( SELECT (sum(b.BO_RAIN))AS t21 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '21:00' AND bo_date = #{boDate} ) t21
+			,( SELECT (sum(b.BO_RAIN))AS t22 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '22:00' AND bo_date = #{boDate} ) t22
+			,( SELECT (sum(b.BO_RAIN))AS t23 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '23:00' AND bo_date = #{boDate} ) t23
+			,( SELECT (sum(b.BO_RAIN))AS t24 FROM booking b LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ WHERE b.alley_seq=#{alleySeq} AND bo_time = '24:00' AND bo_date = #{boDate} ) t24
 	</select>
 	
 	<select id="bookingDetailOne" resultType="Integer">
-		SELECT sum(PUBLIC_CNT+ CLUB_CNT+ STUDENT_CNT) AS total FROM booking WHERE ALLEY_SEQ = #{alleySeq} AND BO_TIME = #{boTime} AND BO_DATE = #{boDate}
+		SELECT 
+			sum(BO_RAIN) AS total 
+		FROM booking 
+		WHERE ALLEY_SEQ = #{alleySeq}
+		AND BO_TIME = #{boTime}
+		AND BO_DATE = #{boDate}
 	</select>
 
 

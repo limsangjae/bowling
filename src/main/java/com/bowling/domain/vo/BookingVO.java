@@ -19,5 +19,6 @@ public class BookingVO {
 	private String alleyName; //볼링장이름
 	private String alleyMemberGrade;
 	private int totalCnt;
-	private int maxPerson;
+	private int maxRain;
+	private int boRain;
 }

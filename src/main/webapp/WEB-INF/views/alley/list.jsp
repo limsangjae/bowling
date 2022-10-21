@@ -28,14 +28,14 @@
 		<div class="container">
 			<div class="row justify-content-center align-items-center">
 				<div class="col-lg-9 text-center mt-5">
-					<h1 class="heading" data-aos="fade-up">볼링장 목록</h1>
 					
 					<div class="col-lg-9 text-center search_wrap">
 						<form id="searchForm" action="/alley/list" method="get" class="narrow-w form-search d-flex align-items-stretch mb-3"data-aos="fade-up" data-aos-delay="200">
-								<input type="text" class="form-control px-4" name="keyword" placeholder="볼링장 이름" value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+								<input type="text" class="form-control px-4" name="alleyName" placeholder="볼링장 이름" value='<c:out value="${pageMaker.cri.alleyName}"></c:out>'>
+								<input type="text" class="form-control px-4" name="alleyAddr1" placeholder="지역" value='<c:out value="${pageMaker.cri.alleyAddr1}"></c:out>'>
 								<input type="hidden" name="pageNum"value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
 								<input type="hidden" name="amount" value='<c:out value="${pageMaker.cri.amount }"></c:out>'>
-								<button class='btn btn-primary'>검색</button>
+								<button class='btn btn-primary' style="width: 170px;">검색</button>
 						</form>
 					</div>
 					
@@ -79,7 +79,7 @@
 											</span>
 											 <span class="d-block d-flex align-items-center">
 											  <i class="bi bi-clock-fill me-2"></i> 
-											  <span class="caption"><c:out value="${list.openTime}시~${list.closeTime}시" /></span>
+											  <span class="caption"><c:out value="${fn:substring(list.openTime,0,5)}~${fn:substring(list.closeTime,0,5)}" /></span>
 											</span>
 										</div>
 	
@@ -93,7 +93,7 @@
 				</c:if>
            		<c:if test="${listCheck == 'empty'}">
          			<div class="table_empty">
-         				등록된 볼링장이 없습니다.
+         				예약 가능한 볼링장이 없습니다.
          			</div>
              	</c:if>  
 			</div>
@@ -134,7 +134,8 @@
 		<form id="moveForm" action="/alley/list" method="get">
 			<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 			<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-			<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+			<input type="hidden" name="alleyName" value="${pageMaker.cri.alleyName}">
+			<input type="hidden" name="alleyAddr1" value="${pageMaker.cri.alleyAddr1}">
 		</form>
 	</div>
 
@@ -153,6 +154,8 @@
 	<%@ include file="../include/js.jsp"%>
 	<script>
 		$(document).ready(function(){
+			
+			
 			
 			/* 등록 성공 이벤트 */
 			let eResult = '<c:out value="${register_result}"/>';
@@ -223,7 +226,7 @@
 			e.preventDefault();
 			
 			/* 검색 키워드 유효성 검사 */
-			if(!searchForm.find("input[name='keyword']").val()){
+			if(!searchForm.find("input[name='alleyName']").val()){
 				alert("키워드를 입력하십시오");
 				return false;
 			}
@@ -238,9 +241,16 @@
 			
 			e.preventDefault();
 			
-			moveForm.append("<input type='hidden' name='alleySeq' value='"+$(this).attr("href") + "'>");
-			moveForm.attr("action", "/alley/detail");
-			moveForm.submit();
+			const user = "${memberVO.memberId}";
+			console.log(user);
+			if(user != ""){
+				moveForm.append("<input type='hidden' name='alleySeq' value='"+$(this).attr("href") + "'>");
+				moveForm.attr("action", "/alley/detail");
+				moveForm.submit();
+			}else{
+				moveForm.attr("action", "/member/login");
+				moveForm.submit();
+			}
 			
 			
 		});

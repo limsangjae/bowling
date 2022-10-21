@@ -63,7 +63,7 @@
             </div>
             <b class="name">*전화번호</b>
             <div class="input-group">
-              <input class="tel_input" id="memberTel"name="memberTel"  maxlength="11" oninput="telinput()" placeholder="숫자만 입력 가능">
+              <input class="tel_input phoneNumber" id="memberTel"name="memberTel"  maxlength="13" oninput="telinput()" placeholder="숫자만 입력 가능">
             </div>
             <b class="name">*우편번호</b>
             <div class="box input-group">
@@ -230,6 +230,7 @@ $(".login_button").click(function(){
 		    showMonthAfterYear: true,
 		    yearSuffix: '년',
 		    yearRange: '1950:2022' ,
+		    maxDate:0,
  	});
 	 $('.datepicker').datepicker();
 	 
@@ -383,22 +384,14 @@ function idDuple(){
  function telinput(){
 	 var telinput = /[0-9]/;
 	 var tel = $("#memberTel").val();
-	 var cnt = $("#memberTel").val().length;
 	 
 	 if(!telinput.test(tel)){
 		 $("#memberTel").val("");
-	 }else{
-		 $("#memberTel").blur(function(){
-			let a = tel.slice(0,3);
-			let b = tel.slice(3,7);
-			let c = tel.slice(7,11);
-			if(tel != "" && cnt == 11){
-				$("#memberTel").val(a+"-"+b+"-"+c);
-			}
-			})
 	 }
  }
- 
+ $(document).on("keyup", ".phoneNumber", function(){ 
+		$(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") );
+	});
  
 
 

@@ -34,27 +34,18 @@
 
 		<div class="container">
 			<div class="row justify-content-center align-items-center">
-<!-- 				<div class="col-lg-9 text-center"> -->
-<!-- 					<h1 class="heading" data-aos="fade-up">볼링장 검색</h1> -->
-<!-- 					<form action="#" class="narrow-w form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200"> -->
-<!-- 						<input type="text" class="form-control px-4" placeholder="볼링장 이름"> -->
-<!-- 						<button type="submit" class="btn btn-primary">Search</button> -->
-<!-- 					</form> -->
-<!-- 				</div> -->
 
-				<div class="col-lg-6 text-center">
-					<h1 class="heading" data-aos="fade-up">볼링장 검색</h1>
+				<div class="col-lg-5 text-center"style="background-color: #F8F7F9; border-radius: 3rem; padding: 33px;" data-aos="fade-up">
+					<h1 class="heading" data-aos="fade-up">예약가능 볼링장 검색</h1>
 					<form id="searchForm" action="/alley/list" method="get" class="form-search mb-3"data-aos="fade-up" data-aos-delay="200">
 						<div class="search_section">
-							<input type="text" class="form-control px-4" name="keyword" id="keyword" placeholder="볼링장 이름" value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
-							<span class="search_section_span">or</span>
-							<input type="text" class="form-control px-4" name="localName" id="localName" placeholder="지역명" value='<c:out value="${list.localName}"></c:out>'>
+							<input type="text" class="form-control px-4" name="alleyName" id="alleyName" placeholder="볼링장 이름" autocomplete="off">
+							<input type="text" class="form-control px-4" name="alleyAddr1" id="alleyAddr1" placeholder="지역명" autocomplete="off">
 						</div>
 						<div class="search_section">
-							<input type="text" class="datepicker form-control px-4" name="boDate" id="boDate" readonly="readonly" placeholder="날짜" autocomplete='off' value='<c:out value="${list.boDate}"></c:out>'>
-							<input type="text" class="form-control px-4" name="boTime" id="boTime" placeholder="시간(24시간)" oninput="boTimeInput()" maxlength="5" value='<c:out value="${list.boTime}"></c:out>'>
-							<input type="text" class="form-control px-4" name="totalCnt" id="totalCnt" placeholder="인원" oninput="totalCntInput()" maxlength="2" value='<c:out value="${list.totalCnt}"></c:out>'>
-							<input type="text" class="form-control px-4" name="boGame" id="boGame" placeholder="게임수" oninput="boGameInput()" maxlength="2" value='<c:out value="${list.boGame}"></c:out>'>
+							<input type="text" class="datepicker form-control px-4" name="boDate" id="boDate" readonly="readonly" placeholder="날짜" autocomplete='off'>
+							<input type="text" class="form-control px-4" name="boTime" id="boTime" placeholder="시간(24시간)" oninput="boTimeInput()" maxlength="2" autocomplete="off">
+							<input type="text" class="form-control px-4" name="boRain" id="boRain" placeholder="필요레인개수" oninput="boRainInput()" maxlength="2" autocomplete="off" >
 						</div>
 						<div class="search_section">
 							<button class='btn btn-primary search_buuton'>검색</button>
@@ -62,6 +53,7 @@
 							<input type="hidden" name="pageNum"value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
 							<input type="hidden" name="amount" value='<c:out value="${pageMaker.cri.amount }"></c:out>'>
 					</form>
+					<a href="/alley/list" data-aos="fade-up" style="color: #A68C67;">모든 볼링장 목록</a>
 				</div>
 
 			</div>
@@ -106,7 +98,7 @@
 		e.preventDefault();
 		
 		/* 검색 키워드 유효성 검사 */
-		if(!$("#keyword").val() && !$("#localName").val()){
+		if(!$("#alleyName").val() && !$("#alleyAddr1").val()){
 			alert("볼링장이름 혹은 지역명을 입력하십시오");
 			return false;
 		}
@@ -119,14 +111,11 @@
 			alert("시간를 입력하십시오");
 			return false;
 		}
-		if(!$("#totalCnt").val()){
-			alert("인원수를 입력하십시오");
+		if(!$("#boRain").val()){
+			alert("레인개수를 입력하십시오");
 			return false;
 		}
-		if(!$("#boGame").val()){
-			alert("게임수를 입력하십시오");
-			return false;
-		}
+
 		var boTime = $("#boTime").val()
 		boTime = boTime.replace(boTime,boTime + ":00");
 		$("#boTime").val(boTime);
@@ -148,7 +137,7 @@
 		}
 	}
 	
-	function totalCntInput(){
+	function boRainInput(){
 		var onlyNum = /[0-9]/;
 		var totalCnt = $("#totalCnt").val()
 		
@@ -156,15 +145,7 @@
 			$("#totalCnt").val("");
 		}
 	}
-	
-	function boGameInput(){
-		var onlyNum = /[0-9]/;
-		var boGame = $("#boGame").val()
-		
-		if(!onlyNum.test(boGame)){
-			$("#boGame").val("");
-		}
-	}
+
 	
 	
     </script>

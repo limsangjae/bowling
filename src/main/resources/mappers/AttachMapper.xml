@@ -10,7 +10,11 @@
 	
       <result property="uploadPath" column="UPLOAD_PATH" />
       <result property="uuid" column="UUID" />
+      <result property="uuid1" column="UUID1" />
+      <result property="uuid2" column="UUID2" />
       <result property="fileName" column="FILE_NAME" />
+      <result property="fileName1" column="FILE_NAME1" />
+      <result property="fileName2" column="FILE_NAME2" />
       <result property="alleySeq" column="ALLEY_SEQ" />
 
    </resultMap>

@@ -1,6 +1,10 @@
 package com.bowling.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +17,11 @@ import com.bowling.domain.vo.Criteria;
 import com.bowling.domain.vo.SearchVO;
 import com.bowling.mapper.AlleyMapper;
 import com.bowling.mapper.AttachMapper;
+import com.mchange.v2.sql.filter.SynchronizedFilterDataSource;
 
 @Service
 public class AlleyServiceImpl implements AlleyService {
+	String[] uuidArr = {};
 	
 	@Autowired
 	private AlleyMapper alleyMapper;
@@ -27,18 +33,29 @@ public class AlleyServiceImpl implements AlleyService {
 	public void alleyRegister(AlleyVO alleyVO) throws Exception {
 		alleyMapper.alleyRegister(alleyVO);
 		
-		if(alleyVO.getImageList() == null || alleyVO.getImageList().size() <= 0) {
+		
+		if(alleyVO.getImageList() != null && alleyVO.getImageList().size() > 0) {
+			
+			Map<String, Object> Image = new HashMap<>();
+			
+			
+			alleyVO.getImageList().forEach(attach ->{
+
+				Image.put("alleySeq", alleyVO.getAlleySeq());
+				Image.put("uploadPath",attach.getUploadPath().split(",")[0]);
+				Image.put("uuid",attach.getUuid().split(",")[0]);
+				Image.put("uuid1",attach.getUuid().split(",")[1]);
+				Image.put("uuid2",attach.getUuid().split(",")[2]);
+				Image.put("fileName",attach.getFileName().split(",")[0]);
+				Image.put("fileName1",attach.getFileName().split(",")[1]);
+				Image.put("fileName2",attach.getFileName().split(",")[2]);
+				
+				alleyMapper.imageRegister(Image);
+			});
+		} else {
 			return;
 		}
 		
-		System.out.println(alleyVO.getImageList());
-		
-		alleyVO.getImageList().forEach(attach ->{
-			
-			attach.setAlleySeq(alleyVO.getAlleySeq());
-			alleyMapper.imageRegister(attach);
-			
-		});
 	}
 
 	@Override
@@ -58,7 +75,28 @@ public class AlleyServiceImpl implements AlleyService {
 		return list;
 		
 	}
-
+	
+	@Override
+	public List<AlleyVO> searchAlleyInfo(Criteria cri) {
+		
+		List<AlleyVO> list = alleyMapper.searchAlleyInfo(cri);
+		
+		list.forEach(alley -> {
+			int alleySeq = alley.getAlleySeq();
+			
+			List<AttachImageVO> imageList = attachMapper.getAttachList(alleySeq);
+			
+			alley.setImageList(imageList);
+			
+		});
+		
+		
+		
+		
+		return list;
+		
+	}
+	
 	@Override
 	public int alleyTotal(Criteria cri) throws Exception {
 		return alleyMapper.alleyTotal(cri);
@@ -77,11 +115,26 @@ public class AlleyServiceImpl implements AlleyService {
 			
 			alleyMapper.deleteImageAll(alleyVO.getAlleySeq());
 			
-			alleyVO.getImageList().forEach(attach -> {
+			Map<String, Object> Image = new HashMap<>();
+			
+			alleyVO.getImageList().forEach(attach ->{
+
 				
-				attach.setAlleySeq(alleyVO.getAlleySeq());
-				alleyMapper.imageRegister(attach);
+				Image.put("uuid",attach.getUuid().split(",")[0]);
+				Image.put("fileName",attach.getFileName().split(",")[0]);
+				Image.put("uploadPath",attach.getUploadPath().split(",")[0]);
+				Image.put("alleySeq", alleyVO.getAlleySeq());
 				
+				if(alleyVO.getImageList().size() > 1) {
+					Image.put("uuid1",attach.getUuid().split(",")[1]);
+					Image.put("fileName1",attach.getFileName().split(",")[1]);
+				}
+				if(alleyVO.getImageList().size() > 2) {
+					Image.put("uuid2",attach.getUuid().split(",")[2]);
+					Image.put("fileName2",attach.getFileName().split(",")[2]);
+				}
+				
+				alleyMapper.imageRegister(Image);
 			});
 			
 		}
@@ -106,25 +159,6 @@ public class AlleyServiceImpl implements AlleyService {
 
 	
 
-	@Override
-	public List<AlleyVO> searchAlleyInfo(SearchVO searchVO) {
-		
-		List<AlleyVO> list = alleyMapper.searchAlleyInfo(searchVO);
-		
-		list.forEach(alley -> {
-			int alleySeq = alley.getAlleySeq();
-			
-			List<AttachImageVO> imageList = attachMapper.getAttachList(alleySeq);
-			
-			alley.setImageList(imageList);
-			
-		});
-		
-		
-		
-		
-		return list;
-		
-	}
+
 
 }

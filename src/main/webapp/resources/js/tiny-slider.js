@@ -131,7 +131,7 @@ function percentageLayout() {
   outer = doc.createElement('div'),
   str = '',
   count = 70,
-  perPage = 3,
+  perPage = 1,
   supported = false;
 
   wrapper.className = "tns-t-subp2";
@@ -518,7 +518,7 @@ var tns = function(options) {
     navContainer: false,
     navAsThumbnails: false,
     arrowKeys: false,
-    speed: 300,
+    speed: 200,
     autoplay: false,
     autoplayPosition: 'top',
     autoplayTimeout: 5000,

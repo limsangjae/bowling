@@ -43,7 +43,7 @@ referrerpolicy="no-referrer">
 						<c:if test="${ memberVO != null}">
 							<c:if test="${memberVO.adminCk != 1}">							
 								<li class="has-children">
-									<a href="/member/detail">회원정보</a>
+									<a href="/member/detail">${memberVO.memberName}님</a>
 									<ul class="dropdown">
 										<li><a href="/member/detail">예약내역</a></li>
 										<li><a href="/member/modify">회원정보수정</a></li>

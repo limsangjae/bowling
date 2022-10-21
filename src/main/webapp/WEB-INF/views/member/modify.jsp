@@ -138,12 +138,16 @@
 $("#delete").on("click",function(){
 	let modifyform = $("#modifyform");
 	modifyform.attr("action", "/member/delete");
-	modifyform.submit();
+	
 	
 	let answer = confirm("정말 회원을 탈퇴하시겠습니까?");
 	
 	if(answer){
 		alert("회원이 탈퇴되었습니다.");
+		modifyform.submit();
+	}else{
+		alert("탈퇴 취소 하셨습니다.")
+		return false;
 	}
 }) 
 

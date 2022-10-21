@@ -2,6 +2,8 @@ package com.bowling.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.bowling.domain.vo.AlleyMemberGradeVO;
 import com.bowling.domain.vo.AlleyVO;
 import com.bowling.domain.vo.BookingVO;
@@ -35,5 +37,5 @@ public interface AlleyService {
 	public int MemberGradeCk(BookingVO bookingVO);
 	
 	//사용자가 입력한 값으로 찾은 볼링장들의 목록
-	public List<AlleyVO> searchAlleyInfo(SearchVO searchVO);
+	public List<AlleyVO> searchAlleyInfo(Criteria cri) throws Exception;
 }

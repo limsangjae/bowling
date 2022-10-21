@@ -3,49 +3,72 @@
 <mapper namespace="com.bowling.mapper.AlleyMapper">
 
 	<!-- 볼링장 등록 -->
-	<insert id="alleyRegister">
+	<insert id="alleyRegister" useGeneratedKeys="true" keyProperty="alleySeq" >
 		INSERT INTO alley
-		(ALLEY_SEQ, ALLEY_TEL, ALLEY_NAME, OPEN_TIME, CLOSE_TIME, PRICE_NOMARL, PRICE_CLUB, PRICE_STUDENT, ALLEY_ZIP_CODE, ALLEY_ADDR1, ALLEY_ADDR2, ALLEY_RAIN, ALLEY_CONTENT, FIRST_REGIST_TM, FIRST_REGIST_ID, LAST_UPDT_TM, LAST_UPDT_ID)
-		VALUES (NULL, #{alleyTel}, #{alleyName}, #{openTime}, #{closeTime}, #{priceNomarl}, #{priceClub}, #{priceStudent}, #{alleyZipCode}, #{alleyAddr1}, #{alleyAddr2}, #{alleyRain},#{alleyContent} ,NOW(), #{firstRegistId}, NOW(), #{lastUpdtId})
+		(ALLEY_TEL, ALLEY_NAME, OPEN_TIME, CLOSE_TIME, PRICE_NOMARL, PRICE_CLUB, PRICE_STUDENT, ALLEY_ZIP_CODE, ALLEY_ADDR1, ALLEY_ADDR2, ALLEY_RAIN, ALLEY_CONTENT, FIRST_REGIST_TM, FIRST_REGIST_ID, LAST_UPDT_TM, LAST_UPDT_ID)
+		VALUES (#{alleyTel}, #{alleyName}, #{openTime}, #{closeTime}, #{priceNomarl}, #{priceClub}, #{priceStudent}, #{alleyZipCode}, #{alleyAddr1}, #{alleyAddr2}, #{alleyRain},#{alleyContent} ,NOW(), #{firstRegistId}, NOW(), #{lastUpdtId})
 	</insert>
 	
 	<!-- 볼링장 리스트 -->
-	
-    <select id="alleyList" resultMap="AlleyVO">
-       select  ALLEY_NAME, ALLEY_ADDR1,ALLEY_ADDR2, ALLEY_TEL, OPEN_TIME, CLOSE_TIME,PRICE_NOMARL,PRICE_CLUB,PRICE_STUDENT,ALLEY_SEQ
-       from ALLEY 
-       order by ALLEY_SEQ DESC 
-    </select>
-	
-<!-- 	<select id="alleyList" resultMap="AlleyVO"> -->
-<!-- 		<![CDATA[ -->
-<!--           SELECT * FROM ( -->
-<!--               SELECT /*+INDEX_DESC(ALLEY ALLEY_PK) */  -->
-<!--                   ROWNUM AS RN, ALLEY_NAME, ALLEY_ADDR2, ALLEY_TEL, OPEN_TIME, CLOSE_TIME, PRICE_NOMARL, PRICE_CLUB, PRICE_STUDENT, ALLEY_SEQ -->
-<!--             FROM ALLEY  -->
-<!--             WHERE -->
-             
-<!--     	]]>          -->
-<!--             <if test="keyword != null"> -->
-<!--                 ALLEY_NAME LIKE '%'||#{keyword}||'%' AND -->
-<!--             </if> -->
-            
-<!--     	<![CDATA[         -->
-<!--              ROWNUM <= #{pageNum}*#{amount} -->
-
-<!--             ) -->
-<!--         WHERE RN > (#{pageNum} - 1) * #{amount} ORDER BY ALLEY_SEQ DESC -->
-<!--       	]]> -->
-      		
-<!-- 	</select> -->
+	<select id="searchAlleyInfo" resultMap="AlleyVO">
+		SELECT *
+		FROM alley
+		WHERE alley_seq NOT IN (
+			SELECT c.alley_seq
+			FROM 
+				(SELECT
+					b.BO_RAIN,a.*
+				FROM 
+					alley a LEFT JOIN booking b ON a.alley_seq = b.ALLEY_SEQ
+				where b.BO_TIME = #{boTime}
+				AND b.BO_DATE = #{boDate}
+		)c
+		<![CDATA[
+		WHERE alley_rain - bo_rain < #{boRain})
+		]]>
+		<if test="alleyName != null and alleyName != ''">
+			AND alley_name LIKE concat('%',#{alleyName},'%')
+		</if>
+		<if test="alleyAddr1 != null and alleyAddr1 != ''">
+			and ALLEY_ADDR1 LIKE concat('%',#{alleyAddr1},'%')
+		</if>
+		<if test="boTime != null and boTime != ''">
+			<![CDATA[
+			AND  #{boTime} >= OPEN_TIME AND #{boTime} <= CLOSE_TIME  
+			]]>
+		</if>
+		order by alley_seq desc
+		limit #{skip},#{amount}
+	</select>
 	
 	
 	
 	<select id="alleyTotal" resultType="int">
-		SELECT COUNT(*) FROM ALLEY
-		
-		<if test="keyword !=null">
-			WHERE ALLEY_NAME LIKE '%'||#{keyword}||'%'		
+				SELECT Count(*)				
+		FROM alley
+		WHERE alley_seq NOT IN (
+			SELECT c.alley_seq
+			FROM 
+				(SELECT
+					b.BO_RAIN,a.*
+				FROM 
+					alley a LEFT JOIN booking b ON a.alley_seq = b.ALLEY_SEQ
+				where b.BO_TIME = #{boTime}
+				AND b.BO_DATE = #{boDate}
+		)c
+		<![CDATA[
+		WHERE alley_rain - bo_rain < #{boRain})
+		]]>
+		<if test="alleyName != null and alleyName != ''">
+			AND alley_name LIKE concat('%',#{alleyName},'%')
+		</if>
+		<if test="alleyAddr1 != null and alleyAddr1 != ''">
+			and ALLEY_ADDR1 LIKE concat('%',#{alleyAddr1},'%')
+		</if>
+		<if test="boTime != null and boTime != ''">
+			<![CDATA[
+			AND  #{boTime} >= OPEN_TIME AND #{boTime} <= CLOSE_TIME  
+			]]>
 		</if>
 	</select>
 	
@@ -65,7 +88,6 @@
 		SET ALLEY_TEL = #{alleyTel}, ALLEY_NAME = #{alleyName}, OPEN_TIME = #{openTime},
 			CLOSE_TIME = #{closeTime}, PRICE_NOMARL = #{priceNomarl}, PRICE_CLUB = #{priceClub}, PRICE_STUDENT = #{priceStudent},
 			ALLEY_ZIP_CODE=#{alleyZipCode}, ALLEY_ADDR1 = #{alleyAddr1}, ALLEY_ADDR2 = #{alleyAddr2}, ALLEY_RAIN = #{alleyRain}, ALLEY_CONTENT = #{alleyContent}
-			LAST_UPDT_TM=NOW(), LAST_UPDT_ID=#{memberId}
 		WHERE ALLEY_SEQ = #{alleySeq}	
 	</update>
 	
@@ -75,9 +97,10 @@
 	</delete>
 	
 	<!-- 이미지 등록 -->
-	<insert id="imageRegister">
+	<insert id="imageRegister" parameterType="java.util.Map">
 		
-		INSERT INTO IMAGE(ALLEY_SEQ,FILE_NAME,UPLOAD_PATH,UUID) VALUES (#{alleySeq},#{fileName},#{uploadPath},#{uuid})
+		INSERT INTO IMAGE(ALLEY_SEQ,UPLOAD_PATH,UUID,UUID1,UUID2,FILE_NAME,FILE_NAME1,FILE_NAME2)
+		VALUES (#{alleySeq},#{uploadPath},#{uuid},#{uuid1},#{uuid2},#{fileName},#{fileName1},#{fileName2})
 	
 	</insert>
 	
@@ -95,42 +118,13 @@
 	
 	<!-- 회원등급 조건 체크 -->
 	<select id="MemberGradeCk" resultType="int">
-		SELECT COUNT(DISTINCT BO_DATE) FROM BOOKING
+		SELECT COUNT(DISTINCT BO_TIME) FROM BOOKING
 		WHERE DATE_ADD(NOW(), INTERVAL -3 MONTH) AND MEMBER_ID = #{memberId} AND alley_seq = #{alleySeq}
 	</select>
 	
 	
-<!-- 	<select id="searchAlleyInfo" resultMap="AlleyVO"> -->
-<!-- 		<choose> -->
-<!-- 			<when test="boTime != null and boDate != null and (alleyName != null or localName != null)"> -->
-<!-- 				SELECT (b.PUBLIC_CNT+ b.CLUB_CNT+ b.STUDENT_CNT) AS total,b.ALLEY_SEQ ,a.ALLEY_NAME,(a.ALLEY_RAIN*5) AS allowPerson,a.ALLEY_ADDR1,a.ALLEY_ADDR2, a.ALLEY_TEL, a.OPEN_TIME, a.CLOSE_TIME -->
-<!-- 				FROM booking b -->
-<!-- 				LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ -->
-<!-- 				WHERE b.BO_TIME = #{boTime} AND b.BO_DATE = #{boDate} AND (a.ALLEY_NAME LIKE '%'||#{alleyName}||'%' OR a.ALLEY_ADDR1 LIKE '%'||#{localName}||'%') -->
-<!-- 				order by ALLEY_SEQ DESC -->
-<!-- 			</when> -->
-<!-- 			<otherwise> -->
-<!-- 				select  ALLEY_NAME, ALLEY_ADDR1,ALLEY_ADDR2, ALLEY_TEL, OPEN_TIME, CLOSE_TIME,PRICE_NOMARL,PRICE_CLUB,PRICE_STUDENT,ALLEY_SEQ -->
-<!-- 		        from ALLEY  -->
-<!-- 		        order by ALLEY_SEQ DESC  -->
-<!-- 			</otherwise> -->
-<!-- 		</choose> -->
-<!-- 	</select> -->
 	
-	
-	<select id="searchAlleyInfo" resultMap="AlleyVO">
-		SELECT *
-		FROM alley
-		WHERE ALLEY_SEQ NOT IN (
-		SELECT a.ALLEY_SEQ from
-		(SELECT (b.PUBLIC_CNT+ b.CLUB_CNT+ b.STUDENT_CNT) AS total, b.ALLEY_SEQ , a.ALLEY_NAME,(a.ALLEY_RAIN*5) AS allowPerson
-		FROM booking b
-		LEFT JOIN alley a ON b.ALLEY_SEQ = a.ALLEY_SEQ
-		WHERE b.BO_TIME = #{boTime} AND b.BO_DATE = #{boDate} AND (a.ALLEY_NAME LIKE '%'||#{alleyName}||'%' OR a.ALLEY_ADDR1 LIKE '%'||#{localName}||'%')
-		) a
-		WHERE total > allowPerson
-		)
-	</select>
+
 	
 	
 	<resultMap id="AlleyVO" type="com.bowling.domain.vo.AlleyVO">

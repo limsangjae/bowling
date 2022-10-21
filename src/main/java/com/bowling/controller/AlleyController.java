@@ -8,6 +8,7 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +28,9 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bowling.domain.vo.AlleyMemberGradeVO;
@@ -46,7 +49,7 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @RequestMapping("/alley")
 @Log4j
-public class AlleyController<E> {
+public class AlleyController {
 	
 	@Autowired
 	private AlleyService alleyService;
@@ -64,6 +67,7 @@ public class AlleyController<E> {
 	
 	@PostMapping("/register.do")
 	public String registerPOST(AlleyVO alleyVO, RedirectAttributes rttr) throws Exception{
+		
 		log.info("register : " + alleyVO);
 		
 		alleyService.alleyRegister(alleyVO); //볼링장 등록 쿼리 수행
@@ -77,15 +81,16 @@ public class AlleyController<E> {
 	
 	//볼링장 목록
 	@GetMapping("/list")
-	public void listGET(Criteria cri, Model model,SearchVO searchVO) throws Exception {
+	public void listGET(Criteria cri, Model model) throws Exception {
 		log.info("볼링장 목록 페이지 접속");
+		
+		int pageNum = cri.getPageNum();
+		int amount = cri.getAmount();
 
-		//볼링장 목록 출력 데이터
-//		List<AlleyVO> alleyList = alleyService.alleyList();
-//		model.addAttribute("list", alleyList);
+		cri.setSkip((pageNum -1)*amount);
 		
 		//사용자가 입력한 값으로 찾은 볼링장들의 목록
-		List<AlleyVO> searchInfo = alleyService.searchAlleyInfo(searchVO);
+		List<AlleyVO> searchInfo = alleyService.searchAlleyInfo(cri);
 		model.addAttribute("list", searchInfo);
 		
 		
@@ -200,7 +205,7 @@ public class AlleyController<E> {
 		}
 		
 		/* 이미저 정보 담는 객체 */
-		List<AttachImageVO> list = new ArrayList();
+		List<AttachImageVO> list = new ArrayList<>();
 		
 		for(MultipartFile multipartFile : uploadFile) {
 			
@@ -253,7 +258,7 @@ public class AlleyController<E> {
 		}//for
 		
 		ResponseEntity<List<AttachImageVO>> result = new ResponseEntity<List<AttachImageVO>>(list,HttpStatus.OK);
-		
+		System.out.println(result+"@@@@@@@");
 		return result;
 		
 	}
