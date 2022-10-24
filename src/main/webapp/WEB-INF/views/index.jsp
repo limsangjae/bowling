@@ -44,8 +44,13 @@
 						</div>
 						<div class="search_section">
 							<input type="text" class="datepicker form-control px-4" name="boDate" id="boDate" readonly="readonly" placeholder="날짜" autocomplete='off'>
-							<input type="text" class="form-control px-4" name="boTime" id="boTime" placeholder="시간(24시간)" oninput="boTimeInput()" maxlength="2" autocomplete="off">
-							<input type="text" class="form-control px-4" name="boRain" id="boRain" placeholder="필요레인개수" oninput="boRainInput()" maxlength="2" autocomplete="off" >
+							<select id="boTime" name="boTime" class="form-control px-4" style="margin-left: 0px;">
+									<option selected disabled>시간</option>
+								<c:forEach var="i" begin="9" end="24">
+									<option>${i}:00</option>
+								</c:forEach>
+							</select>
+							<input type="text" class="form-control px-4" name="boRain" id="boRain" placeholder="레인개수" oninput="boRainInput()" maxlength="2" autocomplete="off" >
 						</div>
 						<div class="search_section">
 							<button class='btn btn-primary search_buuton'>검색</button>
@@ -115,10 +120,6 @@
 			alert("레인개수를 입력하십시오");
 			return false;
 		}
-
-		var boTime = $("#boTime").val()
-		boTime = boTime.replace(boTime,boTime + ":00");
-		$("#boTime").val(boTime);
 		
 		searchForm.find("input[name='pageNum']").val("1");
 		searchForm.find("input[name='amount']").val("9");
@@ -128,14 +129,6 @@
 	
 	
 	
-	function boTimeInput(){
-		var onlyNum = /[0-9]/;
-		var boTime = $("#boTime").val()
-		
-		if(!onlyNum.test(boTime)){
-			$("#boTime").val("");
-		}
-	}
 	
 	function boRainInput(){
 		var onlyNum = /[0-9]/;

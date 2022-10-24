@@ -261,6 +261,7 @@ $(".login_button").click(function(){
     	     
     	     if(!pwCk.test(pw)){
     	    	 $('.pwck_input_re_4').css('display','block');
+    	    	 alert("비밀번호 형식을 맞춰주세요.");    	    	
     	    	 return false;
     	     }else{
     	    	 $('.pwck_input_re_4').css('display','none');
@@ -484,11 +485,19 @@ function idDuple(){
  $('.pw_input').on("blur",function(){
      var pw = $('.pw_input').val();
      var pwck = $('.pwck_input').val();
+     var pwReg = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;    //8 ~ 16자 영문, 숫자, 특수문자를 최소 한가지씩 조합
 	 if(pwck !="" && pw != pwck){
 		 alert("비밀번호를 다시 확인해주세요")
 		 $('.pw_input').val("");
 		 $('.pwck_input').val("");
 	 }
+	 if(!pwReg.test(pw)){
+    	 $('.pwck_input_re_4').css('display','block');
+     }else{
+    	 $('.pwck_input_re_4').css('display','none');
+     }
+     
+     
  })   
   
 

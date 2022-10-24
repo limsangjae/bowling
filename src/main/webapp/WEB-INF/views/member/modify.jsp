@@ -63,7 +63,7 @@
             </div>
             <b class="name">*전화번호</b>
             <div class="input-group">
-              <input class="tel_input" id="memberTel"name="memberTel" placeholder="전화번호" maxlength="14" oninput="telinput()" value='<c:out value="${memberInfo.memberTel}"></c:out>'>
+              <input class="tel_input phoneNumber" id="memberTel"name="memberTel" placeholder="전화번호" maxlength="14" oninput="telinput()" value='<c:out value="${memberInfo.memberTel}"></c:out>'>
             </div>
             <b class="name">*우편번호</b>
             <div class="box input-group">
@@ -172,6 +172,7 @@ $("#delete").on("click",function(){
 		    showMonthAfterYear: true,
 		    yearSuffix: '년',
 		    yearRange: '1950:2022' ,
+		    maxDate:0,
  	});
 	 $('.datepicker').datepicker();
 	 
@@ -183,7 +184,19 @@ $("#delete").on("click",function(){
     		 alert("아이디를 입력해 주세요");
     		 return false;
     	 }
-    
+    	
+    	 
+    	 var pw = $('.pw_input').val();
+	     var pwCk = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;    //8 ~ 16자 영문, 숫자, 특수문자를 최소 한가지씩 조합
+	     
+	     if(!pwCk.test(pw)){
+	    	 $('.pwck_input_re_4').css('display','block');
+	    	 alert("비밀번호 형식을 맞춰주세요.");
+	    	 return false;
+	     }else{
+	    	 $('.pwck_input_re_4').css('display','none');
+	     }
+    	 
     	 
     	 if($('.mail_input').val() == ""){
     		 alert("이메일을 입력해 주세요")
@@ -276,33 +289,24 @@ function idDuple(){
 	 
 	 if(!nameCk.test(name)){
 		 $("#memberName").val('');
-		 alert("한글만 입력 가능합니다.")
 	 }
 
  }
- 
  
  
  //전화번호 유효성 검사
  function telinput(){
 	 var telinput = /[0-9]/;
 	 var tel = $("#memberTel").val();
-	 var cnt = $("#memberTel").val().length;
 	 
 	 if(!telinput.test(tel)){
 		 $("#memberTel").val("");
-		 alert("숫자만 입력 가능합니다.");
-	 }else{
-		 $("#memberTel").blur(function(){
-			let a = tel.slice(0,3);
-			let b = tel.slice(3,7);
-			let c = tel.slice(7,11);
-			if(tel != "" && cnt == 11){
-				$("#memberTel").val(a+"-"+b+"-"+c);
-			}
-			})
 	 }
  }
+ $(document).on("keyup", ".phoneNumber", function(){ 
+		$(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") );
+	});
+ 
  
  
 
@@ -402,7 +406,6 @@ function idDuple(){
 	     
      if(!pwReg.test(pw)){
     	 $('.pwck_input_re_4').css('display','block');
-    	 return false;
      }else{
     	 $('.pwck_input_re_4').css('display','none');
      }

@@ -82,10 +82,13 @@
 						
 				</div>
 				<div class="col-lg-4">
-					<h2 class="heading text-primary mb-4"><c:out value="${alleyInfo.alleyName}" /></h2>
-					<div class="d-flex mb-3 ">
-						<b>주소 : </b>
-						<p class="meta"><c:out value="${alleyInfo.alleyAddr1}, ${alleyInfo.alleyAddr2}" /></p>
+					<div class="mb-2 text-md-center">
+						<b>위치</b>
+					</div>
+					<div class="row justify-content-center mb-3">
+						<div id="map"style="height:300px;">
+					
+						</div>
 					</div>
 					<div class="d-flex mb-3">
 						<b>영업시간 : </b>
@@ -111,15 +114,13 @@
 						<b>레인개수 : </b>
 						<p class="text-black-50"><c:out value="${alleyInfo.alleyRain}" />레인</p>
 					</div>
-					<div class="d-flex mb-3">
-						<b>소개 : </b>
-						<p class="text-black-50"><c:out value="${alleyInfo.alleyContent}" escapeXml="false"/></p>
-					</div>
-					<div class="row justify-content-center">
-						<div id="map"style="height:200px;">
-					
+					<c:if test="${not empty alleyInfo.alleyContent}">
+						<div class="d-flex mb-3">
+							<b>소개 : </b>
+							<p class="text-black-50"><c:out value="${alleyInfo.alleyContent}" escapeXml="false"/></p>
 						</div>
-					</div>
+					</c:if>
+					
 				</div>
 	            <form id="moveForm" action="/alley/list" method="get" >
 					<input type="hidden" name="pageNum" value="${cri.pageNum}">
@@ -320,7 +321,7 @@
         }
 
         infoWindow.setContent([
-          '<div style="padding:10px;min-width:80px;max-width:400px;line-height:100%;">',
+          '<div style="padding:10px;min-width:80px;max-width:360px;line-height:100%;">',
           '<h5 style="margin-top:5px;">'+ address +'</h5><br />',
           htmlAddresses.join('<br />'),
           '</div>'
@@ -364,6 +365,9 @@
     	
     	 $(".slider").slick({
     	   	    dots:true,
+    	   	    autoplay:true,
+    	   	    speed:200,
+    	   	    
     	 })
     	
     	
@@ -378,7 +382,7 @@
     		if(arr.length === 0 ){
     			
 				let str = "";
-				str += "<div id='result_card'>";
+				str += "<div id='result_card' class='result_card'>";
 				str += "<img src='${path}/resources/images/Noimg.png' class='img-fluid'>";
 				str += "</div>";
 				
@@ -393,7 +397,7 @@
     		let str = "";
     		
 			let fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
-			str += "<div id='result_card'";
+			str += "<div id='result_card' class='result_card'";
 			str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "'";
 			str += ">";
 			str += "<img src='display?fileName=" + fileCallPath +"' class='img-fluid'>";
@@ -404,7 +408,7 @@
 			
 			if(arr[0].uuid1 == null){
     			let str = "";
-				str += "<div id='result_card'>";
+				str += "<div id='result_card' class='result_card'>";
 				str += "<img src='${path}/resources/images/Noimg.png' class='img-fluid'>";
 				str += "</div>";
 				
@@ -413,7 +417,7 @@
     			let str1 = "";
         		
     			let fileCallPath1 = encodeURIComponent(obj.uploadPath + "/" + obj.uuid1 + "_" + obj.fileName1);
-    			str1 += "<div id='result_card'";
+    			str1 += "<div id='result_card' class='result_card'";
     			str1 += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid1 + "' data-filename='" + obj.fileName1 + "'";
     			str1 += ">";
     			str1 += "<img src='display?fileName=" + fileCallPath1 +"' class='img-fluid'>";
@@ -424,7 +428,7 @@
 			
     		if(arr[0].uuid2 == null){
     			let str = "";
-				str += "<div id='result_card'>";
+				str += "<div id='result_card' class='result_card'>";
 				str += "<img src='${path}/resources/images/Noimg.png' class='img-fluid'>";
 				str += "</div>";
 				
@@ -433,7 +437,7 @@
         		let str2 = "";
         		
     			let fileCallPath2 = encodeURIComponent(obj.uploadPath + "/" + obj.uuid2 + "_" + obj.fileName2);
-    			str2 += "<div id='result_card'";
+    			str2 += "<div id='result_card' class='result_card'";
     			str2 += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid2 + "' data-filename='" + obj.fileName2 + "'";
     			str2 += ">";
     			str2 += "<img src='display?fileName=" + fileCallPath2 +"' class='img-fluid'>";

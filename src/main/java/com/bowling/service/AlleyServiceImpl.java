@@ -1,7 +1,5 @@
 package com.bowling.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +12,8 @@ import com.bowling.domain.vo.AlleyVO;
 import com.bowling.domain.vo.AttachImageVO;
 import com.bowling.domain.vo.BookingVO;
 import com.bowling.domain.vo.Criteria;
-import com.bowling.domain.vo.SearchVO;
 import com.bowling.mapper.AlleyMapper;
 import com.bowling.mapper.AttachMapper;
-import com.mchange.v2.sql.filter.SynchronizedFilterDataSource;
 
 @Service
 public class AlleyServiceImpl implements AlleyService {
@@ -38,20 +34,37 @@ public class AlleyServiceImpl implements AlleyService {
 			
 			Map<String, Object> Image = new HashMap<>();
 			
-			
-			alleyVO.getImageList().forEach(attach ->{
-
-				Image.put("alleySeq", alleyVO.getAlleySeq());
-				Image.put("uploadPath",attach.getUploadPath().split(",")[0]);
-				Image.put("uuid",attach.getUuid().split(",")[0]);
-				Image.put("uuid1",attach.getUuid().split(",")[1]);
-				Image.put("uuid2",attach.getUuid().split(",")[2]);
-				Image.put("fileName",attach.getFileName().split(",")[0]);
-				Image.put("fileName1",attach.getFileName().split(",")[1]);
-				Image.put("fileName2",attach.getFileName().split(",")[2]);
+			for(int i =0; i <alleyVO.getImageList().size(); i++) {
 				
-				alleyMapper.imageRegister(Image);
-			});
+				String[] uuidArr = alleyVO.getImageList().get(0).getUuid().split(",");
+				
+				for(int j = 0; j < uuidArr.length; j++) {
+					
+					
+					if( j == 0) {
+						Image.put("uuid",alleyVO.getImageList().get(0).getUuid().split(",")[j]);
+						Image.put("fileName",alleyVO.getImageList().get(0).getFileName().split(",")[j]);
+						Image.put("uuid1", null);
+						Image.put("fileName1", null);
+						Image.put("uuid2", null);
+						Image.put("fileName2", null);
+					} else if ( j == 1) {
+						Image.put("uuid1",alleyVO.getImageList().get(0).getUuid().split(",")[j]);
+						Image.put("fileName1",alleyVO.getImageList().get(0).getFileName().split(",")[j]);
+						Image.put("uuid2", null);
+						Image.put("fileName2", null);
+					} else {
+						Image.put("uuid2",alleyVO.getImageList().get(0).getUuid().split(",")[j]);
+						Image.put("fileName2",alleyVO.getImageList().get(0).getFileName().split(",")[j]);
+					}
+					
+				}
+			}
+			Image.put("uploadPath", alleyVO.getImageList().get(0).getUploadPath().split(",")[0]);
+			Image.put("alleySeq", alleyVO.getAlleySeq());
+			
+			
+			alleyMapper.imageRegister(Image);
 		} else {
 			return;
 		}
@@ -117,25 +130,38 @@ public class AlleyServiceImpl implements AlleyService {
 			
 			Map<String, Object> Image = new HashMap<>();
 			
-			alleyVO.getImageList().forEach(attach ->{
-
+			
+			for(int i =0; i <alleyVO.getImageList().size(); i++) {
 				
-				Image.put("uuid",attach.getUuid().split(",")[0]);
-				Image.put("fileName",attach.getFileName().split(",")[0]);
-				Image.put("uploadPath",attach.getUploadPath().split(",")[0]);
-				Image.put("alleySeq", alleyVO.getAlleySeq());
+				String[] uuidArr = alleyVO.getImageList().get(0).getUuid().split(",");
 				
-				if(alleyVO.getImageList().size() > 1) {
-					Image.put("uuid1",attach.getUuid().split(",")[1]);
-					Image.put("fileName1",attach.getFileName().split(",")[1]);
+				for(int j = 0; j < uuidArr.length; j++) {
+					
+					
+					if( j == 0) {
+						Image.put("uuid",alleyVO.getImageList().get(0).getUuid().split(",")[j]);
+						Image.put("fileName",alleyVO.getImageList().get(0).getFileName().split(",")[j]);
+						Image.put("uuid1", null);
+						Image.put("fileName1", null);
+						Image.put("uuid2", null);
+						Image.put("fileName2", null);
+					} else if ( j == 1) {
+						Image.put("uuid1",alleyVO.getImageList().get(0).getUuid().split(",")[j]);
+						Image.put("fileName1",alleyVO.getImageList().get(0).getFileName().split(",")[j]);
+						Image.put("uuid2", null);
+						Image.put("fileName2", null);
+					} else {
+						Image.put("uuid2",alleyVO.getImageList().get(0).getUuid().split(",")[j]);
+						Image.put("fileName2",alleyVO.getImageList().get(0).getFileName().split(",")[j]);
+					}
+					
 				}
-				if(alleyVO.getImageList().size() > 2) {
-					Image.put("uuid2",attach.getUuid().split(",")[2]);
-					Image.put("fileName2",attach.getFileName().split(",")[2]);
-				}
-				
-				alleyMapper.imageRegister(Image);
-			});
+			}
+			Image.put("uploadPath", alleyVO.getImageList().get(0).getUploadPath().split(",")[0]);
+			Image.put("alleySeq", alleyVO.getAlleySeq());
+			
+			
+			alleyMapper.imageRegister(Image);
 			
 		}
 		

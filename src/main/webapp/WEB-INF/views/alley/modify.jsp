@@ -203,6 +203,12 @@
     	
     	/* 수정 버튼 */
     	$("#modifyBtn").on("click", function(e){
+    		
+    		if($(".result_card").length >3){
+ 		    	alert("이미지는 최대 3개 등록할수 있습니다.")
+ 		    	return false;
+ 		    }
+    		
     		e.preventDefault();
     		$("#modifyForm").submit();
     	})
@@ -275,44 +281,46 @@
     		
     	}
     	
+    	let cardCnt = 0;
     	/* 이미지 출력 */
     	function showUploadImage(uploadResultArr){
-    		
+
     		/* 전달받은 데이터 검증 */
     		if(!uploadResultArr || uploadResultArr.length == 0){return}
-    		
-    		let obj = uploadResultArr[0];
-    		
-    		let uploadResult = $("#uploadResult");
-    		
-    		let str = "";
-    		
-    		let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
-    		
-    		str += "<div id='result_card'>";
-    		str += "<img src='display?fileName=" + fileCallPath +"' class='img-fluid mb-2'>";
-    		str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>X<i class='bi bi-x-circle'></i></div>";
-    		str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
-    		str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
-    		str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";		
-    		str += "</div>";		
-    		
-       		uploadResult.append(str);     
- 
-            
+	    	
+	    	let obj = uploadResultArr[0];
+	    	
+	    	let uploadResult = $("#uploadResult");
+
+	    	let str = "";
+	    	
+	    	let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+	    	
+	    	str += "<div id='result_card"+cardCnt+"' class='result_card' style='margin-bottom: 4rem;height:400px;'>";
+			str += "<img src='display?fileName=" + fileCallPath +"' class='img-fluid mb-2'>";
+			str += "<div id='imgData"+cardCnt+"' class='imgDeleteBtn mb-3 btn btn-primary' onclick='deleteFile("+cardCnt+")' data-file='"+ fileCallPath +"'>X</div>";
+			str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
+			str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
+			str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";
+			str += "</div>";
+			
+			uploadResult.append(str);
+			cardCnt++;
     	}
-		
-    	/* 이미지 삭제 버튼 동작 */
-    	$("#uploadResult").on("click", ".imgDeleteBtn", function(e){
-    		deleteFile();
-    	});
+    	
+    	
+    	
     	/* 파일 삭제 메서드 */
-    	function deleteFile(){
+    	function deleteFile(num){
     		
-    		let targetFile = $(".imgDeleteBtn").data("file");
+			
+    		const targetDiv = $("#result_card"+num);
+    		const targetFile = $("#imgData"+num).data("file");
     		
-    		let targetDiv = $("#result_card");
+    		console.log(targetDiv);
+    		console.log(targetFile);
     		
+
     		$.ajax({
     			url: '/alley/deleteFile',
     			data : {fileName : targetFile},
