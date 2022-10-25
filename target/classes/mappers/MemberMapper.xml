@@ -66,7 +66,7 @@
   	
   	<!-- 예약정보 조회 -->
   	<select id="memberBookingDetail" resultMap="BookingVO">
-		SELECT b.BO_NUM, b.ALLEY_SEQ, b.MEMBER_ID, b.BO_TIME, b.BO_DATE, b.BO_GAME, b.PUBLIC_CNT, b.CLUB_CNT, b.STUDENT_CNT,a.ALLEY_NAME
+		SELECT b.BO_NUM, b.ALLEY_SEQ, b.MEMBER_ID, b.BO_TIME, b.BO_DATE, b.BO_GAME, b.PUBLIC_CNT, b.CLUB_CNT, b.STUDENT_CNT,a.ALLEY_NAME,b.BO_RAIN
 		FROM booking b
 		LEFT JOIN member m ON b.MEMBER_ID = m.MEMBER_ID
 		LEFT JOIN alley a on b.ALLEY_SEQ = a.ALLEY_SEQ
@@ -97,6 +97,7 @@
       <result property="lastUpdtTm" column="LAST_UPDT_TM" />
       <result property="alleyName" column="ALLEY_NAME" />
       <result property="alleyMemberGrade" column="ALLEY_MEMBER_GRADE" />
+      <result property="boRain" column="BO_RAIN" />
    </resultMap>
   	
   	

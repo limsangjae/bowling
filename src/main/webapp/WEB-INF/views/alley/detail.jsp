@@ -36,7 +36,7 @@
 							<li class="breadcrumb-item active text-white-50 ">현재 회원님의 ${alleyInfo.alleyName}에서 등급 : <c:out value="${memberGrade}"/></li>
 						</c:if>
 						<c:if test="${memberGrade == null}">
-							<li class="breadcrumb-item active text-white-50 ">예약한적이 없는 볼링장 입니다.</li>
+							<li class="breadcrumb-item active text-white-50 ">예약한 내역이 없는 볼링장 입니다.</li>
 						</c:if>
 						<c:if test="${memberGradeCk >= 4 and memberGrade == '일반'}">
 							<li class="breadcrumb-item "><button class="gradeChange" id="gradeChange">회원등급 변경 신청</button></li>
@@ -82,36 +82,36 @@
 						
 				</div>
 				<div class="col-lg-4">
-					<div class="mb-2 text-md-center">
+					<div class="mb-2 text-md-start">
 						<b>위치</b>
 					</div>
-					<div class="row justify-content-center mb-3">
+					<div class="row justify-content-center mb-3" style="margin-left: 2px;">
 						<div id="map"style="height:300px;">
 					
 						</div>
 					</div>
 					<div class="d-flex mb-3">
-						<b>영업시간 : </b>
+						<b>영업시간 : &nbsp;</b>
 						<p class="text-black-50"><c:out value="${fn:substring(alleyInfo.openTime,0,5)}~${fn:substring(alleyInfo.closeTime,0,5)}" /></p>
 					</div>
 					<div class="d-flex mb-3">
-						<b>전화번호 : </b>
+						<b>전화번호 : &nbsp;</b>
 						<p class="text-black-50"><c:out value="${alleyInfo.alleyTel}" /></p>
 					</div>
 					<div class="d-flex mb-3">
-						<b>일반 가격 : </b>
+						<b>일반 가격 : &nbsp;</b>
 						<p class="text-black-50"><fmt:formatNumber value="${alleyInfo.priceNomarl}" pattern="#,###" />원</p>
 					</div>
 					<div class="d-flex mb-3">
-						<b>클럽가격 : </b>
+						<b>클럽가격 : &nbsp;</b>
 						<p class="text-black-50"><fmt:formatNumber value="${alleyInfo.priceClub}" pattern="#,###" />원</p>
 					</div>
 					<div class="d-flex mb-3">
-						<b>학생가격 : </b>
+						<b>학생가격 : &nbsp;</b>
 						<p class="text-black-50"><fmt:formatNumber value="${alleyInfo.priceStudent}" pattern="#,###" />원</p>
 					</div>
 					<div class="d-flex mb-3">
-						<b>레인개수 : </b>
+						<b>레인개수 : &nbsp;</b>
 						<p class="text-black-50"><c:out value="${alleyInfo.alleyRain}" />레인</p>
 					</div>
 					<c:if test="${not empty alleyInfo.alleyContent}">
@@ -146,7 +146,7 @@
 				</div>
 				<div class="col-lg-4 gameinfo_wrap mt-5">
 					<div class="d-flex mb-3 justify-content-center">
-						<b class="me-3">*게임수  : </b>
+						<b class="me-3">* 게임수 : </b>
 						<input type="button" class="plu_mi_btn" onclick='count("game_minus")' value='-'>
 						<input id ="boGame" class="gameinfo_input" maxlength="2" value="0">
 						<input type="button" class="plu_mi_btn" onclick='count("game_plus")' value='+'>
@@ -170,7 +170,7 @@
 						<input type="button" class="plu_mi_btn" onclick='count("student_plus")' value='+'>
 					</div>
 					<div class="d-flex mb-3 justify-content-center">
-						<b class="me-3">레인 개수 : </b>
+						<b class="me-3">레인 개수 &nbsp;:</b>
 						<select id="boRain" class="rain_input">
 							<c:forEach var="i" begin="1" end="${alleyInfo.alleyRain}">
 								<option>${i}</option>

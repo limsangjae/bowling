@@ -86,13 +86,11 @@ public class AlleyController {
 		
 		int pageNum = cri.getPageNum();
 		int amount = cri.getAmount();
-
-		cri.setSkip((pageNum -1)*amount);
 		
+		cri.setSkip((pageNum -1)*amount);
 		//사용자가 입력한 값으로 찾은 볼링장들의 목록
 		List<AlleyVO> searchInfo = alleyService.searchAlleyInfo(cri);
 		model.addAttribute("list", searchInfo);
-		
 		
 		if(!searchInfo.isEmpty()) {
 			model.addAttribute("list",searchInfo);	

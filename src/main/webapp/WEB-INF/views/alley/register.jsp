@@ -50,7 +50,7 @@
 									<b class="register_b">*볼링장 이름</b>
 									<input name="alleyName" id="alleyName" class="form-control" placeholder="볼링장 이름">
 								</div>
-									<b class="register_b">*주소</b>
+								<b class="register_b">*주소</b>
 								<div class="col-10 mb-3">
 									<input name="alleyZipCode" id="alleyZipCode" class="form-control address_input_1" placeholder="우편번호" readonly="readonly">
 									<button onclick="execution_daum_address()" type="button" class="btn btn-primary addrBtn">주소 찾기</button>

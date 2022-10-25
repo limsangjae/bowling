@@ -34,7 +34,7 @@
 		</if>
 		<if test="boTime != null and boTime != ''">
 			<![CDATA[
-			AND  #{boTime} >= OPEN_TIME AND #{boTime} <= CLOSE_TIME  
+			AND  #{boTime} >= OPEN_TIME AND #{boTime} <= CLOSE_TIME  and #{boRain} <= ALLEY_RAIN
 			]]>
 		</if>
 		order by alley_seq desc
@@ -67,7 +67,7 @@
 		</if>
 		<if test="boTime != null and boTime != ''">
 			<![CDATA[
-			AND  #{boTime} >= OPEN_TIME AND #{boTime} <= CLOSE_TIME  
+			AND  #{boTime} >= OPEN_TIME AND #{boTime} <= CLOSE_TIME  and #{boRain} <= ALLEY_RAIN
 			]]>
 		</if>
 	</select>

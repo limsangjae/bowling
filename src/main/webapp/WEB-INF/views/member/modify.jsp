@@ -59,7 +59,7 @@
             </div>
             <b class="name">*생년월일</b>
             <div class="input-group">
-              <input class="datepicker age_input" id="memberBirth" name="dateBirth" placeholder="생년월일" value='<c:out value="${memberInfo.dateBirth}"></c:out>'>
+              <input class="datepicker age_input" id="memberBirth" name="dateBirth" placeholder="생년월일" readonly="readonly" value='<c:out value="${memberInfo.dateBirth}"></c:out>'>
             </div>
             <b class="name">*전화번호</b>
             <div class="input-group">
@@ -191,8 +191,6 @@ $("#delete").on("click",function(){
 	     
 	     if(!pwCk.test(pw)){
 	    	 $('.pwck_input_re_4').css('display','block');
-	    	 alert("비밀번호 형식을 맞춰주세요.");
-	    	 return false;
 	     }else{
 	    	 $('.pwck_input_re_4').css('display','none');
 	     }

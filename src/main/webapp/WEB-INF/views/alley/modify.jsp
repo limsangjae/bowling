@@ -48,8 +48,10 @@
 						<div class="row justify-content-between">
 							<div class="col-lg-7">
 								<div class="col-10 mb-3">
+									<b class="register_b">*볼링장 이름</b>
 									<input name="alleyName" class="form-control" placeholder="볼링장 이름" value="<c:out value='${alleyInfo.alleyName}'></c:out>">
 								</div>
+								<b class="register_b">*주소</b>
 								<div class="col-10 mb-3">
 									<input name="alleyZipCode" class="form-control address_input_1" placeholder="우편번호" readonly="readonly" value="<c:out value='${alleyInfo.alleyZipCode}'></c:out>">
 									<button onclick="execution_daum_address()" type="button" class="btn btn-primary addrBtn">주소 찾기</button>
@@ -61,30 +63,50 @@
 									<input name="alleyAddr2" class="form-control address_input_3" placeholder="상세주소" readonly="readonly" value="<c:out value='${alleyInfo.alleyAddr2}'></c:out>">
 								</div>
 								<div class="col-10 mb-3">
+									<b class="register_b">*전화번호</b>
 									<input name="alleyTel" class="form-control" placeholder="전화번호" value="<c:out value='${alleyInfo.alleyTel}'></c:out>">
 								</div>
 								<div class="col-10 mb-3">
-									<input name="openTime" class="form-control" placeholder="오픈시간" value="<c:out value='${alleyInfo.openTime}'></c:out>">
+									<b class="register_b">*오픈시간</b>
+									<select id="openTime" name="openTime" class="form-control text-md-start" style="margin-left: 0px;">
+										<option selected>${alleyInfo.openTime}</option>
+										<c:forEach var="i" begin="9" end="24">
+											<option>${i}:00</option>
+										</c:forEach>
+									</select>
 								</div>
 								<div class="col-10 mb-3">
-									<input name="closeTime" class="form-control" placeholder="마감시간" value="<c:out value='${alleyInfo.closeTime}'></c:out>">
+									<b class="register_b">*마감시간</b>
+									<select id="closeTime" name="closeTime" class="form-control text-md-start" style="margin-left: 0px;">
+										<option selected>${alleyInfo.closeTime}</option>
+										<c:forEach var="i" begin="9" end="24">
+											<option>${i}:00</option>
+										</c:forEach>
+									</select>									
 								</div>
 								<div class="col-10 mb-3">
+									<b class="register_b">*일반가격</b>
 									<input name="priceNomarl" class="form-control" placeholder="일반가격" value="<c:out value='${alleyInfo.priceNomarl}'></c:out>">
 								</div>
 								<div class="col-10 mb-3">
+									<b class="register_b">*클럽가격</b>
 									<input name="priceClub" class="form-control" placeholder="클럽가격" value="<c:out value='${alleyInfo.priceClub}'></c:out>">
 								</div>
 								<div class="col-10 mb-3">
+									<b class="register_b">*학생가격</b>
 									<input name="priceStudent" class="form-control" placeholder="학생가격" value="<c:out value='${alleyInfo.priceStudent}'></c:out>">
 								</div>
 								<div class="col-10 mb-3">
+									<b class="register_b">*레인개수</b>
 									<input name="alleyRain" class="form-control" placeholder="레인개수" value="<c:out value='${alleyInfo.alleyRain}'></c:out>">
 								</div>
 								<div class="col-10 mb-3">
+									<b class="register_b">볼링장 소개</b>
 									<textarea name="alleyContent" id="alleyContent_textarea" class="form-control" placeholder="볼링장 소개">${alleyInfo.alleyContent}</textarea>
 								</div>
 								<div class="col-10 mb-3">
+									<b class="register_b">볼링장 사진</b>
+									<p style="color: red;">※볼링장 사진은 최대 3개만 등록할수있습니다.</p>
 									<input type="file" multiple id ="fileItem" name="uploadFile" class="form-control">
 								</div>
 							</div> 
@@ -102,10 +124,10 @@
 						</div>
 						<input type="hidden" name="alleySeq" value="${alleyInfo.alleySeq}">
 					</form>
-					<div class="col-10">
+					<div class="col-10" style="width: 100%;">
 						<button id ="cancelBtn" class = "btn btn-primary">취소</button>
 						<button id ="modifyBtn" class = "btn btn-primary">수정</button>
-						<button id ="deleteBtn" class="btn btn-primary">삭제</button>
+						<button id ="deleteBtn" class="btn btn-primary" style="float: right;">삭제</button>
 					</div>
 				</div>
 				<form id="moveForm" action="/alley/list" method="get" >
@@ -221,7 +243,19 @@
     		moveForm.append('<input type="hidden" name="alleySeq" value="${alleyInfo.alleySeq}">');
     		moveForm.attr("action", "/alley/delete");
     		moveForm.attr("method", "post");
-    		moveForm.submit();
+    		
+    		let answer = confirm("정말 볼링장을 삭제하시겠습니까?");
+    		
+    		if(answer){
+    			alert("볼링장이 삭제되었습니다.");
+    			moveForm.submit();	
+    		}else{
+    			alert("취소 하셨습니다.")
+    			return false;
+    		}
+    		
+    		
+    		
     	});
     	
     	

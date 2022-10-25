@@ -35,6 +35,11 @@
 								<input type="text" class="form-control px-4" name="alleyAddr1" placeholder="지역" value='<c:out value="${pageMaker.cri.alleyAddr1}"></c:out>'>
 								<input type="hidden" name="pageNum"value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
 								<input type="hidden" name="amount" value='<c:out value="${pageMaker.cri.amount }"></c:out>'>
+								<c:if test="${not empty pageMaker.cri.boDate}">
+									<input type="hidden" name="boDate" value='<c:out value="${pageMaker.cri.boDate }"></c:out>'>
+									<input type="hidden" name="boRain" value='<c:out value="${pageMaker.cri.boRain }"></c:out>'>
+									<input type="hidden" name="boTime" value='<c:out value="${pageMaker.cri.boTime }"></c:out>'>
+								</c:if>
 								<button class='btn btn-primary' style="width: 170px;">검색</button>
 						</form>
 					</div>
@@ -136,6 +141,15 @@
 			<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 			<input type="hidden" name="alleyName" value="${pageMaker.cri.alleyName}">
 			<input type="hidden" name="alleyAddr1" value="${pageMaker.cri.alleyAddr1}">
+			<c:if test="${not empty pageMaker.cri.boDate}">
+				<input type="hidden" name="boDate" value='<c:out value="${pageMaker.cri.boDate }"></c:out>'>
+				<input type="hidden" name="boRain" value='<c:out value="${pageMaker.cri.boRain }"></c:out>'>
+				<input type="hidden" name="boTime" value='<c:out value="${pageMaker.cri.boTime }"></c:out>'>
+			</c:if>
+		</form>
+		
+		<form id="detailForm">
+			
 		</form>
 	</div>
 
@@ -179,10 +193,6 @@
 			
 			/* 삭제 결과 경고창 */
 			let delete_result = '${delete_result}';
-			
-			if(delete_result == 1){
-				alert("삭제 완료");
-			}	
 		
 		
 			/* 이미지 삽입 */
@@ -206,7 +216,7 @@
 		
 		});
 	
-	
+		let detailForm = $("#detailForm");
 		let moveForm = $('#moveForm');
 		let searchForm = $('#searchForm');
 
@@ -224,13 +234,7 @@
 		$("#searchForm button").on("click", function(e){
 			
 			e.preventDefault();
-			
-// 			/* 검색 키워드 유효성 검사 */
-// 			if(!searchForm.find("input[name='alleyName']").val()){
-// 				alert("키워드를 입력하십시오");
-// 				return false;
-// 			}
-			
+					
 			searchForm.find("input[name='pageNum']").val("1");
 			
 			searchForm.submit();
@@ -242,14 +246,13 @@
 			e.preventDefault();
 			
 			const user = "${memberVO.memberId}";
-			console.log(user);
 			if(user != ""){
-				moveForm.append("<input type='hidden' name='alleySeq' value='"+$(this).attr("href") + "'>");
-				moveForm.attr("action", "/alley/detail");
-				moveForm.submit();
+				detailForm.append("<input type='hidden' name='alleySeq' value='"+$(this).attr("href") + "'>");
+				detailForm.attr("action", "/alley/detail");
+				detailForm.submit();
 			}else{
-				moveForm.attr("action", "/member/login");
-				moveForm.submit();
+				detailForm.attr("action", "/member/login");
+				detailForm.submit();
 			}
 			
 			

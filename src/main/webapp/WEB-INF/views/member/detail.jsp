@@ -60,9 +60,10 @@
 								<h3 class="text-black mb-3 font-weight-bold"><c:out value="예약한 볼링장 :${memberBook.alleyName}"/></h3>
 								<p class="text-black-50"><c:out value="예약시간 : ${memberBook.boTime}"/></p>
 								<p class="text-black-50"><c:out value="예약날짜 : ${memberBook.boDate}"/></p>
-								<p class="text-black-50"><c:out value="예약게임수 : ${memberBook.boGame}"/></p>
+								<p class="text-black-50"><c:out value="예약게임수 : ${memberBook.boGame}게임"/></p>
 								<c:set var="total" value="${memberBook.publicCnt+memberBook.clubCnt+memberBook.studentCnt}"/>
-								<p class="text-black-50"><c:out value="총 인원 : ${total}"/></p>
+								<p class="text-black-50"><c:out value="총 인원 : ${total}명"/></p>
+								<p class="text-black-50"><c:out value="예약레인 : ${memberBook.boRain}개"/></p>
 								<button class="btn btn-primary bookingDelete" id="bookingDelete" onclick="bookingDelete(<c:out value="${memberBook.boNum}"/>)">예약취소</button>
 							</div>
 						</div>					

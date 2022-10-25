@@ -27,7 +27,7 @@
           <div class="form sign-up">
            	<b class="name">*아이디</b>
             <div class="box input-group">
-            	<input class="id_input" id="memberId" name="memberId" maxlength='16'>
+            	<input class="id_input" id="memberId" name="memberId" maxlength='16' autocomplete='off'>
 				<button class="add_btn" type="button" onclick="idDuple()">중복확인</button>
 				<input type="hidden" id="memberIdCk" value="0">
             </div>
@@ -51,11 +51,11 @@
             </div>
             <b class="name">*이메일</b>
             <div class="input-group">
-              <input class="mail_input" id="memberEmail" name="memberEmail" type="email"  maxlength="100" placeholder="abc@abc.com">
+              <input class="mail_input" id="memberEmail" name="memberEmail" type="email"  maxlength="100" placeholder="abc@abc.com" autocomplete='off'>
             </div>
             <b class="name">*이름</b>
             <div class="input-group">
-              <input class="name_input" id="memberName" name="memberName" maxlength="5" oninput="nameCk()" placeholder="한글만 입력 가능">
+              <input class="name_input" id="memberName" name="memberName" maxlength="5" oninput="nameCk()" placeholder="한글만 입력 가능" autocomplete='off'>
             </div>
             <b class="name">*생년월일</b>
             <div class="input-group">
@@ -63,7 +63,7 @@
             </div>
             <b class="name">*전화번호</b>
             <div class="input-group">
-              <input class="tel_input phoneNumber" id="memberTel"name="memberTel"  maxlength="13" oninput="telinput()" placeholder="숫자만 입력 가능">
+              <input class="tel_input phoneNumber" id="memberTel"name="memberTel"  maxlength="13" oninput="telinput()" placeholder="숫자만 입력 가능" autocomplete='off'>
             </div>
             <b class="name">*우편번호</b>
             <div class="box input-group">
@@ -76,7 +76,7 @@
             </div>
             <b class="name">상세주소</b>
             <div class="input-group">
-              <input class="address_input_3" id="memberAddr2" name="memberAddr2" readonly="readonly" maxlength="100" placeholder="선택입력">
+              <input class="address_input_3" id="memberAddr2" name="memberAddr2" readonly="readonly" maxlength="100" placeholder="선택입력" autocomplete='off'>
             </div>
             <button class="join_button" type="button">
               회원가입

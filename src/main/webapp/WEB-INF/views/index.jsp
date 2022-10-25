@@ -132,10 +132,10 @@
 	
 	function boRainInput(){
 		var onlyNum = /[0-9]/;
-		var totalCnt = $("#totalCnt").val()
+		var boRain = $("#boRain").val()
 		
-		if(!onlyNum.test(totalCnt)){
-			$("#totalCnt").val("");
+		if(!onlyNum.test(boRain)){
+			$("#boRain").val("");
 		}
 	}
 
